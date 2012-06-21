@@ -48,6 +48,7 @@ class Poly
 		Poly* addPoly(const Poly* pol);
 		Poly* multiply(const Poly* pol);
 		
+		ostream& operator<<(const Poly &poly);
 		bool equals(const Poly &pol);
 		Poly* addPoly(const Poly &pol);
 		Poly* multiply(const Poly &pol);
