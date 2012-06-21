@@ -48,6 +48,9 @@ class Poly
 		Poly* addPoly(const Poly* pol);
 		Poly* multiply(const Poly* pol);
 		
+		bool equals(const Poly &pol);
+		Poly* addPoly(const Poly &pol);
+		Poly* multiply(const Poly &pol);
 		
 };
 
