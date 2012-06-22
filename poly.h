@@ -18,17 +18,21 @@ using namespace std;
 
 struct term
 {
-	pair < int, int* > *t;	
+
+	pair < int, pair < int, int > > t;	
 	
-	term() { t->first = 0; t->second = 0; }
-	term(int coeff, int* exp)  
+	term() { t.first = 0; t.second.first = 0; t.second.second = 0;}
+	term(int coeff, int exp1, int exp2)  
 	{
-		t->first = coeff; 
-		t->second = exp; 
+		t.first = coeff; 
+		t.second.first = exp1; 
+		t.second.second = exp2;
 	}
 	
-	int getCoeff()	{return t->first; }
-	int* getExponents()	{return t->second; }
+	int getCoeff()	{return t.first; }
+	
+	//Do I really need this??
+	pair<int, int> getExponents(){return t.second; }
 	
 };
 	
@@ -38,20 +42,17 @@ class Poly
 		
 		list<term> pol;	
 		
-		Poly simplify(Poly* pol);
+		Poly* simplify(Poly* pol);
 		
 	public:
-		Poly();
-		void addTerm(term *t);
-		void toString();
-		bool equals(const Poly* pol);
-		Poly* addPoly(const Poly* pol);
-		Poly* multiply(const Poly* pol);
-		
+		Poly() {}
+		void addTerm(int coeff, int exp1, int exp2);
 		ostream& operator<<(const Poly &poly);
+		//ack need to account for the mapping of <x,y> v < y,x>
 		bool equals(const Poly &pol);
 		Poly* addPoly(const Poly &pol);
 		Poly* multiply(const Poly &pol);
+				
 		
 };
 
