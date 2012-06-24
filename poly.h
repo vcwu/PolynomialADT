@@ -29,10 +29,10 @@ struct term
 		t.second.second = exp2;
 	}
 	
-	int getCoeff()	{return t.first; }
+	int getCoeff() const	{return t.first; }
 	
 	//Do I really need this??
-	pair<int, int> getExponents(){return t.second; }
+	pair<int, int> getExponents() const {return t.second; }
 	
 };
 	
