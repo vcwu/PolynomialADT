@@ -34,8 +34,8 @@ ostream& operator<<(ostream& out, const Poly &p)
 	{
 		//!Need params for mapping the different vars
 		out <<  it->getCoeff() 
-			<< "x^" << it->getExponents().first 
-			<< "y^" << it->getExponents().second;
+			<< "x^" << it->getExp1() 
+			<< "y^" << it->getExp2();
 
 		//Hurrah! negative stays with coeff, prints perfectly
 		it++;
@@ -46,16 +46,46 @@ ostream& operator<<(ostream& out, const Poly &p)
 }
 
 /*
-Poly* Poly::simplify(Poly* pol)
-{
-	
-}
+Sorts the polynomial in place, in 
+ascending order by "X" then "Y".
+Nothing is simplifed.  
 */
 
+void sortPoly()
+{ 
+	//
+
+	//First sort by X input. 
+
+
+}
+
 /*
-	The two polynomials will be added together, then simplified.
-	If there are an equal number of terms, and each term is double the original term,
-	the two polys are equal.
+Simplify()
+
+Used to combine like terms. 
+First sorts the polynomial in ascending terms,
+then goes through and combines like terms. 
+*/
+
+Poly* Poly::simplify(list<term>*  p)
+{
+	Poly* meat = new Poly();
+	
+
+
+
+
+
+	return meat;
+}
+
+
+/*
+	Precondition: Vars will always be x, then y
+
+	The two polynomials are sorted, then 
+	merged together. 
 */
 bool Poly::equals(const Poly &poly)
 {

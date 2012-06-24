@@ -19,20 +19,23 @@ using namespace std;
 struct term
 {
 
-	pair < int, pair < int, int > > t;	
+	int coeff;
+	int exp[2];
+
 	
-	term() { t.first = 0; t.second.first = 0; t.second.second = 0;}
-	term(int coeff, int exp1, int exp2)  
+
+	term() { coeff = 0; exp[0] = 0; exp[1] = 0;}
+	term(int c, int exp1, int exp2)  
 	{
-		t.first = coeff; 
-		t.second.first = exp1; 
-		t.second.second = exp2;
+		coeff = coeff; 
+		exp[0] = exp1; 
+		exp[1] = exp2;
 	}
 	
-	int getCoeff() const	{return t.first; }
-	
-	//Do I really need this??
-	pair<int, int> getExponents() const {return t.second; }
+	int getCoeff() const {return coeff; }
+
+	int getExp1() const {return exp[0];}
+	int getExp2() const {return exp[1];}
 	
 };
 	
@@ -43,17 +46,29 @@ class Poly
 		
 		list<term> pol;	
 		
-		Poly* simplify(Poly* pol);
 		
 	public:
+		
 		Poly() {}
 		void addTerm(int coeff, int exp1, int exp2);
 		friend ostream& operator<<(ostream& out, const Poly &poly);
+		
+		
 		//ack need to account for the mapping of <x,y> v < y,x>
+		Poly* simplify();
+
+
+
 		bool equals(const Poly &pol);
 		Poly* addPoly(const Poly &pol);
 		Poly* multiply(const Poly &pol);
-				
+		
+		void sortPoly();
+
+		//evaluate
+		//--> Will evalaute for number input,
+		//then map x and y to first, second
+
 		
 };
 

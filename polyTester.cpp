@@ -12,10 +12,11 @@ Polynomial ADT Tester
 
 int main()
 {
+	int c;
 
 	Poly pol1;
 
-	Poly* point = & pol1;
+	Poly* pointer1 = & pol1;
 	/*
 	int coeff, tempExp, tempExp2;
 	cin >> coeff ;
@@ -26,12 +27,19 @@ int main()
 		<< "Exp2: " << tempExp2 << endl;
 	*/
 
-	pol1.addTerm(coeff, tempExp, tempExp2);
+	//pol1.addTerm(coeff, tempExp, tempExp2);
+	
 	pol1.addTerm(-5,7,3);
+	pol1.addTerm(2,7,3);
+	pol1.addTerm(1,7,3);
+	pol1.addTerm(3,1,2);
+	pol1.addTerm(4,3,7);
 	cout << "ThePOL: " << pol1 << endl;
 
+	pol1.simplify(pol1->pol);
 
 
-	cin >> coeff;
+
+	cin >> c;
 	return 0;
 }
