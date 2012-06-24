@@ -25,18 +25,18 @@ void Poly::addTerm(int coeff, int exp1, int exp2)
 
 ostream& operator<<(ostream& out, const Poly &p)
 {
-	list<term>::iterator it;
+	list<term>::const_iterator it;
 	string meat;
 	
 	//Need to figure out why my iterator isn't working.
-	/*
+	
 	for(it = p.pol.begin(); it != p.pol.end(); ++it)
 	{
-		meat += " Wahoo";
+		out <<  it->getCoeff();
 	}
-	*/
+	
 
-	return out << "WAHO!" ;
+	return out;
 }
 
 /*
