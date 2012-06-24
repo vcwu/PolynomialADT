@@ -23,17 +23,20 @@ void Poly::addTerm(int coeff, int exp1, int exp2)
 	pol.push_front(t);
 }
 
-ostream& Poly::operator<<(const Poly &poly)
+ostream& operator<<(ostream& out, const Poly &p)
 {
 	list<term>::iterator it;
 	string meat;
 	
-	for(it = pol.begin(); it != pol.end(); ++it)
+	//Need to figure out why my iterator isn't working.
+	/*
+	for(it = p.pol.begin(); it != p.pol.end(); ++it)
 	{
-		//fluff to print out one term
+		meat += " Wahoo";
 	}
-	
-	return cout << meat;
+	*/
+
+	return out << "WAHO!" ;
 }
 
 /*
@@ -45,11 +48,11 @@ bool Poly::equals(const Poly &poly)
 {
 	//First check if terms are equal? Good idea? Would still need to simplify...
 	//if(poly->pol.length() != 
-	Poly *temp = addPoly(poly);
-	temp = simplify(temp);
+	//Poly *temp = addPoly(poly);
+	//temp = simplify(temp);
 	
 	list<term>::iterator it;
 	
-	
+	return true;
 	
 }
