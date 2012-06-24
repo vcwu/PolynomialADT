@@ -21,8 +21,14 @@ int main()
 	
 	cout << "Coeff: " << coeff <<endl << "Exp: " << tempExp << endl
 		<< "Exp2: " << tempExp2 << endl;
+	//I guess they're being put in backwards?
+	//prints out coeff2, coeff
+	
 	pol1.addTerm(coeff, tempExp, tempExp2);
+	pol1.addTerm(5,7,3);
 	cout << "ThePOL: " << pol1 << endl;
+
+
 
 	cin >> coeff;
 	return 0;
