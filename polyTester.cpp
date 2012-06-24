@@ -14,6 +14,9 @@ int main()
 {
 
 	Poly pol1;
+
+	Poly* point = & pol1;
+	/*
 	int coeff, tempExp, tempExp2;
 	cin >> coeff ;
 	cin >> tempExp;
@@ -21,11 +24,10 @@ int main()
 	
 	cout << "Coeff: " << coeff <<endl << "Exp: " << tempExp << endl
 		<< "Exp2: " << tempExp2 << endl;
-	//I guess they're being put in backwards?
-	//prints out coeff2, coeff
-	
+	*/
+
 	pol1.addTerm(coeff, tempExp, tempExp2);
-	pol1.addTerm(5,7,3);
+	pol1.addTerm(-5,7,3);
 	cout << "ThePOL: " << pol1 << endl;
 
 

@@ -20,7 +20,7 @@ using namespace std;
 void Poly::addTerm(int coeff, int exp1, int exp2)
 {	
 	term t(coeff, exp1, exp2);
-	pol.push_front(t);
+	pol.push_back(t);
 }
 
 ostream& operator<<(ostream& out, const Poly &p)
@@ -30,14 +30,27 @@ ostream& operator<<(ostream& out, const Poly &p)
 	
 	//Need to figure out why my iterator isn't working.
 	
-	for(it = p.pol.begin(); it != p.pol.end(); ++it)
+	for(it = p.pol.begin(); it != p.pol.end();)
 	{
-		out <<  it->getCoeff();
-	}
-	
+		//!Need params for mapping the different vars
+		out <<  it->getCoeff() 
+			<< "x^" << it->getExponents().first 
+			<< "y^" << it->getExponents().second;
 
+		//Hurrah! negative stays with coeff, prints perfectly
+		it++;
+		if(it != p.pol.end())
+			out << " + ";
+	}
 	return out;
 }
+
+/*
+Poly* Poly::simplify(Poly* pol)
+{
+	
+}
+*/
 
 /*
 	The two polynomials will be added together, then simplified.
