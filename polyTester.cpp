@@ -14,13 +14,16 @@ int main()
 {
 
 	Poly pol1;
-	int coeff, tempExp;
+	int coeff, tempExp, tempExp2;
 	cin >> coeff ;
 	cin >> tempExp;
+	cin >> tempExp2;
 	
-	cout << "Coeff: " << coeff <<endl << "Exp: " << tempExp << endl;
-	//pol1.addTerm(5, 
-	
-	
+	cout << "Coeff: " << coeff <<endl << "Exp: " << tempExp << endl
+		<< "Exp2: " << tempExp2 << endl;
+	pol1.addTerm(coeff, tempExp, tempExp2);
+	cout << "ThePOL: " << pol1 << endl;
+
+	cin >> coeff;
 	return 0;
 }

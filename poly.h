@@ -38,6 +38,7 @@ struct term
 	
 class Poly
 {
+
 	private:
 		
 		list<term> pol;	
@@ -47,7 +48,7 @@ class Poly
 	public:
 		Poly() {}
 		void addTerm(int coeff, int exp1, int exp2);
-		ostream& operator<<(const Poly &poly);
+		friend ostream& operator<<(ostream& out, const Poly &poly);
 		//ack need to account for the mapping of <x,y> v < y,x>
 		bool equals(const Poly &pol);
 		Poly* addPoly(const Poly &pol);
