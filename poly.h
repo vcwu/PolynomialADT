@@ -36,7 +36,30 @@ struct term
 
 	int getExp1() const {return exp[0];}
 	int getExp2() const {return exp[1];}
-	
+
+	friend bool operator<  (term t1, term t2)
+	{
+		if ( t1.exp[0] < t2.exp[0])
+			return true;
+		if ( t1.exp[0] > t2.exp[0])
+			return false;
+		
+		//if exp[0] of both are ==
+		if ( t1.exp[1] < t2.exp[1])
+			return true;
+		if ( t1.exp[1] > t2.exp[1])
+			return false;
+		 
+		
+		return false;
+	}
+
+	/*
+	friend bool operator >  (term t1, term t2)
+	{
+		if( t1.exp[0] )
+	}
+	*/
 };
 	
 class Poly
@@ -44,13 +67,14 @@ class Poly
 
 	private:
 		
-		list<term>*  allTerms;	
+		list<term>  allTerms;	
 		
 		
 	public:
 		
 		Poly() {}
-		Poly(list<term> *p) { allTerms = p;}
+		Poly(list<term> p) { allTerms = p;}
+		list<term>* getTerms() { return &allTerms;}
 		void addTerm(int coeff, int exp1, int exp2);
 		friend ostream& operator<<(ostream& out, const Poly &poly);
 		

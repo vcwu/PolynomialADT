@@ -21,7 +21,7 @@ using namespace std;
 void Poly::addTerm(int coeff, int exp1, int exp2)
 {	
 	term t(coeff, exp1, exp2);
-	allTerms->push_back(t);
+	allTerms.push_back(t);
 }
 
 ostream& operator<<(ostream& out, const Poly &p)
@@ -31,16 +31,22 @@ ostream& operator<<(ostream& out, const Poly &p)
 	
 	//Need to figure out why my iterator isn't working.
 	
-	for(it = p.allTerms->begin(); it != p.allTerms->end();)
+	for(it = p.allTerms.begin(); it != p.allTerms.end();)
 	{
 		//!Need params for mapping the different vars
-		out <<  it->getCoeff() 
-			<< "x^" << it->getExp1() 
-			<< "y^" << it->getExp2();
-
+		if( !(it->getExp1() ==0 && it->getExp2() == 0))
+		{
+			out <<  it->getCoeff() 
+				<< "x^" << it->getExp1() 
+				<< "y^" << it->getExp2();
+		}
+		else
+		{
+			out << it->getCoeff();
+		}
 		//Hurrah! negative stays with coeff, prints perfectly
 		it++;
-		if(it != p.allTerms->end())
+		if(it != p.allTerms.end())
 			out << " + ";
 	}
 	return out;
@@ -80,7 +86,8 @@ void Poly::sortPoly(list<term> *p, int xPosition, int yPosition)
 	//
 
 	//First sort by X input. 
-	int y = xPosition;
+	if(p != 0)	
+		p->sort();
 
 }
 
