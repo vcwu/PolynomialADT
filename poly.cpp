@@ -94,7 +94,7 @@ Nothing is simplifed.
 
 /*
 Simplify()
-Destructive
+Non destructive, does NOT modify input list
 
 Note: If list has no terms, will return pointer to empty list
 
@@ -138,19 +138,19 @@ list<term>* Poly::simplify(list<term>*  p, int xPosition, int yPosition)
 		int newCoeff = it->coeff;
 		while(seek != p->end()) 
 		{ 
-				if(*it == *seek)
-				{
-					newCoeff += seek->coeff;
-					//The problem occurs when I try and delete the LAST elem.
-				}
-				else
-				{
-					term t(newCoeff, it->getExp1(), it->getExp2());
-					it = seek;
-					tempList->push_back(t);
-					newCoeff = it->coeff;
-				}
-				seek++;
+			if(term::equalExponents(*it, *seek))
+			{
+				newCoeff += seek->coeff;
+				//The problem occurs when I try and delete the LAST elem.
+			}
+			else
+			{
+				term t(newCoeff, it->getExp1(), it->getExp2());
+				it = seek;
+				tempList->push_back(t);
+				newCoeff = it->coeff;
+			}
+			seek++;	
 		}
 		//need to take care of the last group of like terms
 		term t(newCoeff, it->getExp1(), it->getExp2());
@@ -169,17 +169,35 @@ list<term>* Poly::simplify(list<term>*  p, int xPosition, int yPosition)
 */
 bool Poly::equals(Poly &poly1, Poly &poly2)
 {
-	//First simplify and combine like terms...
-	//if(poly->pol.length() != 
-	//Poly *temp = addPoly(poly);
-	//temp = simplify(temp);
+	//First simplify.
+	list<term>* temp1;
+	list<term>* temp2;
 
-	list<term>::iterator it;
+	temp1 = poly1.simplify(poly1.getTerms(),-1,-1);
+	temp2 = poly2.simplify(poly2.getTerms(),-1,-1);
 	
 
-	//Comparing number of terms. 
-
 	//Comparing terms in each poly to each other. 
+	while(!temp1->empty() && !temp2->empty())
+	{
+			if(temp1->front() == temp2->front())
+			{
+				temp1->pop_front();
+				temp2->pop_front();
+			}
+			else
+			{
+				return false;
+			}
+	}
+	return true;
+
+
+	
+
+	
+
+
 
 
 	return true;

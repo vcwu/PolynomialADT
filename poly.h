@@ -54,20 +54,26 @@ struct term
 		return false;
 	}
 
-	friend bool operator== (term t1, term t2)
+	static bool equalExponents(term t1, term t2)
 	{
-			if(t1.exp[0] == t2.exp[0])
-				if(t1.exp[1] == t2.exp[1])
-					return true;
+		if(t1.exp[0] == t2.exp[0])
+			if(t1.exp[1] == t2.exp[1])
+				return true;
 		return false;
 	}
 
 	/*
-	friend bool operator >  (term t1, term t2)
-	{
-		if( t1.exp[0] )
-	}
+	This tests if the terms are exactly equal (coeff, exps).
 	*/
+	friend bool operator== (term t1, term t2)
+	{
+		if(equalExponents(t1,t2))
+			if(t1.coeff == t2.coeff)
+				return true;
+		return false;
+	}
+
+
 };
 	
 class Poly
@@ -87,7 +93,7 @@ class Poly
 		friend ostream& operator<<(ostream& out, const Poly &poly);
 		
 		
-		
+		//I wonder if I can make this static...
 		list<term>* simplify(list<term>*  p, int x, int y);
 
 		Poly* evaluate(const Poly &pol);
