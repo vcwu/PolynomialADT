@@ -30,24 +30,23 @@ int main()
 
 	//pol1.addTerm(coeff, tempExp, tempExp2);
 	
-	pol1.addTerm(-5,7,9);
-	pol1.addTerm(2,7,5);
-	pol1.addTerm(1,7,3);
-	pol1.addTerm(3,1,2);
-	pol1.addTerm(4,3,7);
 
-	pol1.addTerm(9,1,1);
+	pol1.addTerm(1,1,1);
 	pol1.addTerm(2,1,1);
-	pol1.addTerm(2000,0,0);
+	pol1.addTerm(5,1,4);
+	pol1.addTerm(7,1,4);
+	pol1.addTerm(1,2,3);
+	pol1.addTerm(4,2,3);
+	pol1.addTerm(8,2,3);
+	pol1.addTerm(2,1,1);
+	
+
 	cout << "ThePOL: " << pol1 << endl;
 
-	//pol1.simplify(pol1->pol);
 
-	
-	list<term> *haha = NULL;
-	pol1.sortPoly(pol1.getTerms(),2,3);
+	list<term>* meat = pol1.simplify(pol1.getTerms(), 9,9);
 
-	cout << "Sorted? " << pol1 << endl;
+	cout << "Simplified??" <<  *meat;
 
 	cin >> c;
 	return 0;

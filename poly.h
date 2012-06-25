@@ -54,6 +54,14 @@ struct term
 		return false;
 	}
 
+	friend bool operator== (term t1, term t2)
+	{
+			if(t1.exp[0] == t2.exp[0])
+				if(t1.exp[1] == t2.exp[1])
+					return true;
+		return false;
+	}
+
 	/*
 	friend bool operator >  (term t1, term t2)
 	{
@@ -80,7 +88,7 @@ class Poly
 		
 		
 		
-		Poly* simplify(list<term>*  p, int x, int y);
+		list<term>* simplify(list<term>*  p, int x, int y);
 
 		Poly* evaluate(const Poly &pol);
 
@@ -89,8 +97,7 @@ class Poly
 		Poly* addPoly(const Poly &pol);
 		Poly* multiply(const Poly &pol);
 		
-		void sortPoly(list<term> *p, int xPosition, int yPosition);
-
+		
 		//evaluate
 		//--> Will evalaute for number input,
 		//then map x and y to first, second

@@ -81,19 +81,10 @@ ascending order by "X" then "Y".
 Nothing is simplifed.  
 */
 
-void Poly::sortPoly(list<term> *p, int xPosition, int yPosition)
-{ 
-	//
-
-	//First sort by X input. 
-	if(p != 0)	
-		p->sort();
-
-}
 
 /*
 Simplify()
-
+Destructive
 
 Used to combine like terms. 
 1.  Sorts the polynomial in ascending terms,
@@ -103,20 +94,52 @@ Constant inputs are taken care of already outside;
 they will have 0 0 exponents. 
 */
 
-Poly* Poly::simplify(list<term>*  p, int xPosition, int yPosition)
+list<term>* Poly::simplify(list<term>*  p, int xPosition, int yPosition)
 {
+	//First, sort the polynomial, by firstExp then secondExp.
+	//THe only time this will be a prob is when
+	//we map have <x,y> and <y,x> mapped.
+	if(p != 0)	
+		p->sort();
+
+	//Combine like terms. 
+	//it keeps track of the first term of a 
+	//group of like terms, while
+	//seek moves forward and destroys like terms.
+	list<term>::iterator it = p->begin();
+	list<term>::iterator seek = it;
+	seek++;
+
+	//No need to combine only one term
 	
-	
-	//first, sort the polynomial. 
-	//this will sort in place?
-	//sortPoly(p, xPosition, yPosition);
 
-
-
-
-
-	Poly* meat = new Poly();
-	return meat;
+	/*ISSUE
+	Logic error.
+	COmpletely skips over the last term in the list. 
+	Because now if it is the bound, seek will go off the far end.
+	*/
+	list<term>* tempList = new list<term>();
+	int newCoeff = it->coeff;
+	while(seek != p->end()) 
+	{ 
+			if(*it == *seek)
+			{
+				newCoeff += seek->coeff;
+				//The problem occurs when I try and delete the LAST elem.
+			}
+			else
+			{
+				term t(newCoeff, it->getExp1(), it->getExp2());
+				it = seek;
+				tempList->push_back(t);
+				newCoeff = it->coeff;
+			}
+			seek++;
+	}
+	//need to take care of the last group of like terms
+	term t(newCoeff, it->getExp1(), it->getExp2());
+	tempList->push_back(t);
+	return tempList;
 }
 
 
