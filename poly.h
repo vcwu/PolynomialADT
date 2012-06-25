@@ -37,6 +37,8 @@ struct term
 	int getExp1() const {return exp[0];}
 	int getExp2() const {return exp[1];}
 
+
+
 	friend bool operator<  (term t1, term t2)
 	{
 		if ( t1.exp[0] < t2.exp[0])
@@ -54,14 +56,6 @@ struct term
 		return false;
 	}
 
-	static bool equalExponents(term t1, term t2)
-	{
-		if(t1.exp[0] == t2.exp[0])
-			if(t1.exp[1] == t2.exp[1])
-				return true;
-		return false;
-	}
-
 	/*
 	This tests if the terms are exactly equal (coeff, exps).
 	*/
@@ -73,7 +67,21 @@ struct term
 		return false;
 	}
 
+	static bool equalExponents(term t1, term t2)
+	{
+		if(t1.exp[0] == t2.exp[0])
+			if(t1.exp[1] == t2.exp[1])
+				return true;
+		return false;
+	}
 
+	static term multiply(term t1, term t2)
+	{
+		int newC = t1.coeff*t2.coeff;
+		int newExp1 = t1.exp[0]+t2.exp[0];
+		int newExp2 = t1.exp[1]+t2.exp[1];
+		return term(newC, newExp1, newExp2);
+	}
 };
 	
 class Poly
@@ -91,8 +99,9 @@ class Poly
 
 		Poly() {}
 		Poly(list<term> *p) { allTerms = *p;}
-		list<term>* getTerms() { return &allTerms;}
+		list<term>* getTerms()  { return &allTerms;}
 		void addTerm(int coeff, int exp1, int exp2);
+		void addTerm(term t);
 		friend ostream& operator<<(ostream& out, const Poly &poly);
 		
 		
@@ -104,7 +113,7 @@ class Poly
 		bool isEmpty() const;
 		bool equals(Poly &poly1, Poly &poly2);
 		Poly* addPoly(Poly &poly1, Poly &poly2);
-		Poly* multiply(const Poly &pol);
+		Poly* multiply(Poly &poly1, Poly &poly2);
 		
 		
 		//evaluate

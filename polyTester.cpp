@@ -20,21 +20,21 @@ int main()
 	Poly* pointer1 = & pol1;
 
 	pol1.addTerm(1,1,1);
-	
 	pol1.addTerm(3,2,3);
+	/*
 	pol1.addTerm(3,9,3);
 	pol1.addTerm(3,9,3);
-	
+	*/
 
 	pol2.addTerm(1,1,1);
-	pol2.addTerm(1,1,1);
+	pol2.addTerm(5,1,1);
 
-	
+	/*
 	pol2.addTerm(3,2,3);
 	pol2.addTerm(3,2,3);
 	pol2.addTerm(3,9,3);
 	pol2.addTerm(3,9,3);
-	
+	*/
 	
 	cout << "Pol1: " << pol1 << endl;
 	cout << "Pol2 " << pol2 << endl;
@@ -55,6 +55,12 @@ int main()
 	cout << endl << "Adding... " << endl;
 	cout << pol1 << " added to " << pol2 << endl;
 	cout << "SOLUTION" <<  *polAdded << endl;
+
+	//testing Multiplication
+	Poly* mult = pol1.multiply(pol1, pol2);
+	cout << endl << "Multiply... " << endl;
+	cout << pol1 << " times " << pol2 << endl;
+	cout << "SOLUTION" <<  *mult << endl;
 
 
 

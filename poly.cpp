@@ -24,6 +24,11 @@ void Poly::addTerm(int coeff, int exp1, int exp2)
 	allTerms.push_back(t);
 }
 
+void Poly::addTerm(term t)
+{	
+	allTerms.push_back(t);
+}
+
 bool  Poly::isEmpty() const 
 {
 	return allTerms.empty();
@@ -168,16 +173,6 @@ bool Poly::equals(Poly &poly1, Poly &poly2)
 	}
 	return true;
 
-
-	
-
-	
-
-
-
-
-	return true;
-	
 }
 
 
@@ -227,4 +222,41 @@ Poly* Poly::addPoly(Poly &poly1, Poly &poly2)
 	Poly* p = new Poly(meat);
 	return p;
 
+}
+
+
+/*
+Multiply
+non Destructive
+
+Multiplies by distribution.
+First, distributes out the polies and adds new terms to a new list.
+Simplifies the answer.
+*/
+Poly* Poly::multiply(Poly &poly1, Poly &poly2)
+{
+	//Distribute out the two polys. 
+	list<term>* meat = new list<term>;
+
+	list<term>* pol1 = poly1.getTerms();
+	list<term>* pol2 = poly2.getTerms();
+
+	list<term>::const_iterator point1 = pol1->begin();
+	list<term>::const_iterator point2 = pol2->begin();
+
+	while(point1 != pol1->end())
+	{
+		while(point2 != pol2->end())
+		{
+			//multiply point1 and point2 term
+			//add result on meat list
+			meat->push_back(term::multiply(*point1, *point2));
+			point2++;
+		}
+		point2 = pol2->begin();
+		point1++;
+	}
+
+	Poly* answer = new Poly(meat);
+	return new Poly(answer->simplify());
 }
