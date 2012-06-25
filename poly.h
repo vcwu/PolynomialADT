@@ -86,21 +86,24 @@ class Poly
 		
 	public:
 		
+		//do i need a destructor?
+
+
 		Poly() {}
-		Poly(list<term> p) { allTerms = p;}
+		Poly(list<term> *p) { allTerms = *p;}
 		list<term>* getTerms() { return &allTerms;}
 		void addTerm(int coeff, int exp1, int exp2);
 		friend ostream& operator<<(ostream& out, const Poly &poly);
 		
 		
 		//I wonder if I can make this static...
-		list<term>* simplify(list<term>*  p, int x, int y);
+		list<term>* simplify();
 
 		Poly* evaluate(const Poly &pol);
 
 		bool isEmpty() const;
 		bool equals(Poly &poly1, Poly &poly2);
-		Poly* addPoly(const Poly &pol);
+		Poly* addPoly(Poly &poly1, Poly &poly2);
 		Poly* multiply(const Poly &pol);
 		
 		

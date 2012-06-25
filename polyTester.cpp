@@ -43,12 +43,14 @@ int main()
 	else
 		cout <<"Nope. not equal. " << endl;
 
+	//Testing simplification, 
+	//doesn't change original!
+	list<term>* meat = pol1.simplify();
+	cout << "Simplified?? " <<  Poly(meat) <<endl;
+	cout << "Original pol1: " << pol1 << endl;
 
+	//Testing Adding
 
-
-	//Testing simplification
-	list<term>* meat = pol1.simplify(pol1.getTerms(), 9,9);
-	cout << "Simplified??" <<  *meat;
 
 	cin >> c;
 	return 0;

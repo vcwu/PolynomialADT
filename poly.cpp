@@ -64,37 +64,8 @@ ostream& operator<<(ostream& out, const Poly &p)
 
 
 /*
-Evaluate: 
-
-A Poly is a template. Evaluate will evaluate the 
-template poly, given two inputs; constant integer inputs
-will be multiplied out and simplifed, while the exponents with 
-variable inputs will be forced to the format <x,y>. 
-An entirely new Poly will be made. If
-*/
-
-Poly* Poly::evaluate(const Poly &pol)
-{
-
-
-
-
-
-	Poly* meat = new Poly();
-	return meat;
-}
-
-
-/*
-Sorts the polynomial in place, in 
-ascending order by "X" then "Y".
-Nothing is simplifed.  
-*/
-
-
-/*
 Simplify()
-Non destructive, does NOT modify input list
+Non destructive, does NOT modify original polynomial
 
 Note: If list has no terms, will return pointer to empty list
 
@@ -106,11 +77,13 @@ Constant inputs are taken care of already outside;
 they will have 0 0 exponents. 
 */
 
-list<term>* Poly::simplify(list<term>*  p, int xPosition, int yPosition)
+list<term>* Poly::simplify()
 {
 	//First, sort the polynomial, by firstExp then secondExp.
 	//THe only time this will be a prob is when
 	//we map have <x,y> and <y,x> mapped.
+
+	list<term>*  p = this->getTerms();
 
 	list<term>* tempList = new list<term>();
 
@@ -170,12 +143,15 @@ list<term>* Poly::simplify(list<term>*  p, int xPosition, int yPosition)
 bool Poly::equals(Poly &poly1, Poly &poly2)
 {
 	//First simplify.
+	/*
 	list<term>* temp1;
 	list<term>* temp2;
 
 	temp1 = poly1.simplify(poly1.getTerms(),-1,-1);
 	temp2 = poly2.simplify(poly2.getTerms(),-1,-1);
-	
+	*/
+	list<term>* temp1 = poly1.simplify();
+	list<term>* temp2 = poly2.simplify();
 
 	//Comparing terms in each poly to each other. 
 	while(!temp1->empty() && !temp2->empty())
@@ -202,4 +178,39 @@ bool Poly::equals(Poly &poly1, Poly &poly2)
 
 	return true;
 	
+}
+
+
+/*
+Evaluate: 
+
+A Poly is a template. Evaluate will evaluate the 
+template poly, given two inputs; constant integer inputs
+will be multiplied out and simplifed, while the exponents with 
+variable inputs will be forced to the format <x,y>. 
+An entirely new Poly will be made. If
+*/
+
+Poly* Poly::evaluate(const Poly &pol)
+{
+
+
+
+
+
+	Poly* meat = new Poly();
+	return meat;
+}
+
+
+Poly* addPoly(Poly &poly1, Poly &poly2)
+{
+	list<term>* temp1;
+	list<term>* temp2;
+
+	temp1 = poly1.simplify();
+	temp2 = poly2.simplify();
+	Poly* meat = new Poly();
+	return meat;
+
 }
