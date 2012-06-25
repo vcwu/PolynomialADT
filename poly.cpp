@@ -15,12 +15,13 @@ s
 #include "poly.h"
 #include <string>
 #include <iostream>
+#include <list>
 using namespace std;
 
 void Poly::addTerm(int coeff, int exp1, int exp2)
 {	
 	term t(coeff, exp1, exp2);
-	pol.push_back(t);
+	allTerms->push_back(t);
 }
 
 ostream& operator<<(ostream& out, const Poly &p)
@@ -30,7 +31,7 @@ ostream& operator<<(ostream& out, const Poly &p)
 	
 	//Need to figure out why my iterator isn't working.
 	
-	for(it = p.pol.begin(); it != p.pol.end();)
+	for(it = p.allTerms->begin(); it != p.allTerms->end();)
 	{
 		//!Need params for mapping the different vars
 		out <<  it->getCoeff() 
@@ -39,11 +40,34 @@ ostream& operator<<(ostream& out, const Poly &p)
 
 		//Hurrah! negative stays with coeff, prints perfectly
 		it++;
-		if(it != p.pol.end())
+		if(it != p.allTerms->end())
 			out << " + ";
 	}
 	return out;
 }
+
+
+/*
+Evaluate: 
+
+A Poly is a template. Evaluate will evaluate the 
+template poly, given two inputs; constant integer inputs
+will be multiplied out and simplifed, while the exponents with 
+variable inputs will be forced to the format <x,y>. 
+An entirely new Poly will be made. If
+*/
+
+Poly* Poly::evaluate(const Poly &pol)
+{
+
+
+
+
+
+	Poly* meat = new Poly();
+	return meat;
+}
+
 
 /*
 Sorts the polynomial in place, in 
@@ -51,51 +75,65 @@ ascending order by "X" then "Y".
 Nothing is simplifed.  
 */
 
-void sortPoly()
+void Poly::sortPoly(list<term> *p, int xPosition, int yPosition)
 { 
 	//
 
 	//First sort by X input. 
-
+	int y = xPosition;
 
 }
 
 /*
 Simplify()
 
+
 Used to combine like terms. 
-First sorts the polynomial in ascending terms,
+1.  Sorts the polynomial in ascending terms,
 then goes through and combines like terms. 
+
+Constant inputs are taken care of already outside; 
+they will have 0 0 exponents. 
 */
 
-Poly* Poly::simplify(list<term>*  p)
+Poly* Poly::simplify(list<term>*  p, int xPosition, int yPosition)
 {
-	Poly* meat = new Poly();
 	
+	
+	//first, sort the polynomial. 
+	//this will sort in place?
+	//sortPoly(p, xPosition, yPosition);
 
 
 
 
 
+	Poly* meat = new Poly();
 	return meat;
 }
 
 
 /*
-	Precondition: Vars will always be x, then y
+	Precondition: Vars will always be x, then y in that order
 
 	The two polynomials are sorted, then 
 	merged together. 
 */
 bool Poly::equals(const Poly &poly)
 {
-	//First check if terms are equal? Good idea? Would still need to simplify...
+	//First simplify and combine like terms...
 	//if(poly->pol.length() != 
 	//Poly *temp = addPoly(poly);
 	//temp = simplify(temp);
 	
 	list<term>::iterator it;
 	
+
+	//Comparing number of terms. 
+
+	//Comparing terms in each poly to each other. 
+
+
 	return true;
 	
 }

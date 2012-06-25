@@ -27,7 +27,7 @@ struct term
 	term() { coeff = 0; exp[0] = 0; exp[1] = 0;}
 	term(int c, int exp1, int exp2)  
 	{
-		coeff = coeff; 
+		coeff = c; 
 		exp[0] = exp1; 
 		exp[1] = exp2;
 	}
@@ -44,26 +44,28 @@ class Poly
 
 	private:
 		
-		list<term> pol;	
+		list<term>*  allTerms;	
 		
 		
 	public:
 		
 		Poly() {}
+		Poly(list<term> *p) { allTerms = p;}
 		void addTerm(int coeff, int exp1, int exp2);
 		friend ostream& operator<<(ostream& out, const Poly &poly);
 		
 		
-		//ack need to account for the mapping of <x,y> v < y,x>
-		Poly* simplify();
+		
+		Poly* simplify(list<term>*  p, int x, int y);
 
+		Poly* evaluate(const Poly &pol);
 
 
 		bool equals(const Poly &pol);
 		Poly* addPoly(const Poly &pol);
 		Poly* multiply(const Poly &pol);
 		
-		void sortPoly();
+		void sortPoly(list<term> *p, int xPosition, int yPosition);
 
 		//evaluate
 		//--> Will evalaute for number input,

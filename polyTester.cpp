@@ -8,6 +8,7 @@ Polynomial ADT Tester
 */
 
 #include <iostream>
+#include <list>
 #include "poly.h"
 
 int main()
@@ -36,8 +37,11 @@ int main()
 	pol1.addTerm(4,3,7);
 	cout << "ThePOL: " << pol1 << endl;
 
-	pol1.simplify(pol1->pol);
+	//pol1.simplify(pol1->pol);
 
+	
+	list<term> *haha = NULL;
+	pol1.sortPoly(haha,3,3);
 
 
 	cin >> c;
