@@ -203,14 +203,28 @@ Poly* Poly::evaluate(const Poly &pol)
 }
 
 
-Poly* addPoly(Poly &poly1, Poly &poly2)
-{
-	list<term>* temp1;
-	list<term>* temp2;
+/*
+addPoly
+non destructive
 
-	temp1 = poly1.simplify();
-	temp2 = poly2.simplify();
-	Poly* meat = new Poly();
-	return meat;
+Copies all terms in both polys into a single list,
+then simplifies the whole thing. 
+Returns a new poly. 
+*/
+
+Poly* Poly::addPoly(Poly &poly1, Poly &poly2)
+{
+	//Copy all terms into single list.
+	list<term>* meat = new list<term>(poly1.getTerms()->begin(), 
+		poly1.getTerms()->end());
+	
+	meat->insert(meat->end(),poly2.getTerms()->begin(), poly2.getTerms()->end());
+	
+	//This is really ugly. I should streamline it.
+	Poly temp = Poly(meat);
+	meat = temp.simplify();
+
+	Poly* p = new Poly(meat);
+	return p;
 
 }

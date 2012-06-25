@@ -20,20 +20,22 @@ int main()
 	Poly* pointer1 = & pol1;
 
 	pol1.addTerm(1,1,1);
-	pol1.addTerm(1,1,1);
-	pol1.addTerm(3,2,3);
+	
 	pol1.addTerm(3,2,3);
 	pol1.addTerm(3,9,3);
 	pol1.addTerm(3,9,3);
+	
 
 	pol2.addTerm(1,1,1);
 	pol2.addTerm(1,1,1);
+
+	
 	pol2.addTerm(3,2,3);
 	pol2.addTerm(3,2,3);
 	pol2.addTerm(3,9,3);
 	pol2.addTerm(3,9,3);
-
-
+	
+	
 	cout << "Pol1: " << pol1 << endl;
 	cout << "Pol2 " << pol2 << endl;
 	
@@ -47,11 +49,17 @@ int main()
 	//doesn't change original!
 	list<term>* meat = pol1.simplify();
 	cout << "Simplified?? " <<  Poly(meat) <<endl;
-	cout << "Original pol1: " << pol1 << endl;
 
 	//Testing Adding
+	Poly* polAdded = pol1.addPoly(pol1,pol2);
+	cout << endl << "Adding... " << endl;
+	cout << pol1 << " added to " << pol2 << endl;
+	cout << "SOLUTION" <<  *polAdded << endl;
 
 
+
+	cout << "Original pol1: " << pol1 << endl;
+	cout << "Original pol2: " << pol2 << endl;
 	cin >> c;
 	return 0;
 }
