@@ -14,6 +14,7 @@ Polynomial ADT Tester
 #include <string>
 #include <map>
 #include <sstream>
+#include <ctype.h>
 
 using namespace std;
 
@@ -22,11 +23,43 @@ struct mappedPoly
 	Poly p;
 	string val[2];
 
+	mappedPoly() {}
+	//makes a nice new copy of the pol template, can destroy it
+	mappedPoly(Poly pol) { p = pol;}
 	Poly* getTemplate() {return &p;}
+
+	/*
+	is_number from stack overflow answer
+	modified to work for negative numbers as well
+
+	goes through string char by char and compares using isdigit
+	author: Charles Salvia 
+	source:
+	http://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c
+	*/
+	static bool is_number(const std::string& s)
+	{
+		std::string::const_iterator it = s.begin();
+		//added in test to check to check for '-'
+		while (it != s.end() && (isdigit(*it)|| *it =='-' )) ++it;
+		return !s.empty() && it == s.end();
+	}
+	/*
+	Multiplies out constants, and forces
+	the format of the Poly to follow <X,Y> to work with other methods
+
+	if val is [x,y] no need to eval
+	*/
+	Poly* evaluate()
+	{
+		//Check if either val[0] or val[1] is a string
+		
+
+	}
 
 };
 
-void readInPolys(fstream &file, string fName, map<string, mappedPoly>* allPolys)
+void readInPolys(fstream &file, string fName, map<string, Poly>* allPolys)
 {
 	int numPoly, coeff, exp1, exp2;
 	string pName;
@@ -39,8 +72,8 @@ void readInPolys(fstream &file, string fName, map<string, mappedPoly>* allPolys)
 		{	
 			file >> pName;
 			bool more = true;
-			(*allPolys)[pName] = mappedPoly();
-			cout <<"name " << pName << endl;
+			(*allPolys)[pName] = Poly();
+			cout <<"name " << pName << " " << endl;
 			while(more)
 			{
 				
@@ -52,16 +85,14 @@ void readInPolys(fstream &file, string fName, map<string, mappedPoly>* allPolys)
 				}
 				else
 				{
-					((*allPolys)[pName]).getTemplate()->addTerm(t);
+					((*allPolys)[pName]).addTerm(t);
 				}
 				
 			}
 			numPoly--;
-			cout << *((*allPolys)[pName].getTemplate()) << endl;
+			cout << ((*allPolys)[pName]) << endl << endl;
 			
-
 		}
-		
 	}
 }
 
@@ -75,7 +106,7 @@ int main()
 	file.open("test.txt");
 
 	//Storing Polys to work with
-	map<string, mappedPoly>* allPolys = new map<string, mappedPoly>;
+	map<string, Poly>* allPolys = new map<string, Poly>;
 
 
 	//Reading in polys from file
@@ -88,8 +119,9 @@ int main()
 
 	stringstream ss (stringstream::in || stringstream::out);
 	string line;
-	string command, key,val1, val2;
-	enum {ADD, EQU, MUL };
+	string command, polKey; 
+	string val1, val2;
+
 	while(getline(file, line))
 	{
 		ss << line;
@@ -97,15 +129,32 @@ int main()
 		//as if there were an empty line between commands and polys
 		if(!line.empty())
 		{
-			//do something with line
+			//Mapping values to mappedPoly
 			ss >> command;
-			ss >> key >> val1, val2;
-			
+			ss >> polKey >> val1 >> val2;
 
+			mappedPoly* p1 = new mappedPoly((*allPolys)[polKey]);
+			p1->val[0] = val1;
+			p1->val[1] = val2;
+
+			ss >> polKey >> val1, val2;
+			mappedPoly* p2 = new mappedPoly((*allPolys)[polKey]);
+			p2->val[0] = val1;
+			p2->val[1] = val2;
+
+			if(command == "add")
+			{
+				//p1->getTemplate()->addPoly(p1->p, p2->p);
+
+			}
 		}
 	}
 
 	
+	string hello = "hello";
+	cout << mappedPoly::is_number(hello);
+
+
 	//cout <<"Poly " << pName<<  * (*allPolys)[pName] << endl << endl;
 	/*
 	cout << "Pol1: " << pol1 << endl;
