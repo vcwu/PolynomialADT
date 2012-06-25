@@ -92,8 +92,8 @@ class Poly
 
 		Poly* evaluate(const Poly &pol);
 
-
-		bool equals(const Poly &pol);
+		bool isEmpty() const;
+		bool equals(Poly &poly1, Poly &poly2);
 		Poly* addPoly(const Poly &pol);
 		Poly* multiply(const Poly &pol);
 		

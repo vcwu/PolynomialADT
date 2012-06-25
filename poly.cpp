@@ -24,30 +24,40 @@ void Poly::addTerm(int coeff, int exp1, int exp2)
 	allTerms.push_back(t);
 }
 
+bool  Poly::isEmpty() const 
+{
+	return allTerms.empty();
+}
+
 ostream& operator<<(ostream& out, const Poly &p)
 {
 	list<term>::const_iterator it;
 	string meat;
 	
-	//Need to figure out why my iterator isn't working.
-	
-	for(it = p.allTerms.begin(); it != p.allTerms.end();)
+	if(!p.isEmpty())
 	{
-		//!Need params for mapping the different vars
-		if( !(it->getExp1() ==0 && it->getExp2() == 0))
+		for(it = p.allTerms.begin(); it != p.allTerms.end();)
 		{
-			out <<  it->getCoeff() 
-				<< "x^" << it->getExp1() 
-				<< "y^" << it->getExp2();
+				//!Need params for mapping the different vars
+				if( !(it->getExp1() ==0 && it->getExp2() == 0))
+				{
+					out <<  it->getCoeff() 
+						<< "x^" << it->getExp1() 
+						<< "y^" << it->getExp2();
+				}
+				else
+				{
+					out << it->getCoeff();
+				}
+				//Hurrah! negative stays with coeff, prints perfectly
+				it++;
+				if(it != p.allTerms.end())
+					out << " + ";
 		}
-		else
-		{
-			out << it->getCoeff();
-		}
-		//Hurrah! negative stays with coeff, prints perfectly
-		it++;
-		if(it != p.allTerms.end())
-			out << " + ";
+	}
+	else
+	{
+		out << "Polynomial has no terms." << endl;
 	}
 	return out;
 }
@@ -86,6 +96,8 @@ Nothing is simplifed.
 Simplify()
 Destructive
 
+Note: If list has no terms, will return pointer to empty list
+
 Used to combine like terms. 
 1.  Sorts the polynomial in ascending terms,
 then goes through and combines like terms. 
@@ -99,46 +111,53 @@ list<term>* Poly::simplify(list<term>*  p, int xPosition, int yPosition)
 	//First, sort the polynomial, by firstExp then secondExp.
 	//THe only time this will be a prob is when
 	//we map have <x,y> and <y,x> mapped.
-	if(p != 0)	
+
+	list<term>* tempList = new list<term>();
+
+	if(!p->empty())	
+	{
 		p->sort();
 
-	//Combine like terms. 
-	//it keeps track of the first term of a 
-	//group of like terms, while
-	//seek moves forward and destroys like terms.
-	list<term>::iterator it = p->begin();
-	list<term>::iterator seek = it;
-	seek++;
+		//Combine like terms. 
+		//it keeps track of the first term of a 
+		//group of like terms, while
+		//seek moves forward and destroys like terms.
+		list<term>::iterator it = p->begin();
+		list<term>::iterator seek = it;
+		seek++;
 
-	//No need to combine only one term
+		//No need to combine only one term
 	
 
-	/*ISSUE
-	Logic error.
-	COmpletely skips over the last term in the list. 
-	Because now if it is the bound, seek will go off the far end.
-	*/
-	list<term>* tempList = new list<term>();
-	int newCoeff = it->coeff;
-	while(seek != p->end()) 
-	{ 
-			if(*it == *seek)
-			{
-				newCoeff += seek->coeff;
-				//The problem occurs when I try and delete the LAST elem.
-			}
-			else
-			{
-				term t(newCoeff, it->getExp1(), it->getExp2());
-				it = seek;
-				tempList->push_back(t);
-				newCoeff = it->coeff;
-			}
-			seek++;
+		/*ISSUE
+		Logic error.
+		COmpletely skips over the last term in the list. 
+		Because now if it is the bound, seek will go off the far end.
+		*/
+		
+		int newCoeff = it->coeff;
+		while(seek != p->end()) 
+		{ 
+				if(*it == *seek)
+				{
+					newCoeff += seek->coeff;
+					//The problem occurs when I try and delete the LAST elem.
+				}
+				else
+				{
+					term t(newCoeff, it->getExp1(), it->getExp2());
+					it = seek;
+					tempList->push_back(t);
+					newCoeff = it->coeff;
+				}
+				seek++;
+		}
+		//need to take care of the last group of like terms
+		term t(newCoeff, it->getExp1(), it->getExp2());
+		tempList->push_back(t);
+		
 	}
-	//need to take care of the last group of like terms
-	term t(newCoeff, it->getExp1(), it->getExp2());
-	tempList->push_back(t);
+
 	return tempList;
 }
 
@@ -146,16 +165,15 @@ list<term>* Poly::simplify(list<term>*  p, int xPosition, int yPosition)
 /*
 	Precondition: Vars will always be x, then y in that order
 
-	The two polynomials are sorted, then 
-	merged together. 
+	The two polynomials are sorted, then compared term by term.
 */
-bool Poly::equals(const Poly &poly)
+bool Poly::equals(Poly &poly1, Poly &poly2)
 {
 	//First simplify and combine like terms...
 	//if(poly->pol.length() != 
 	//Poly *temp = addPoly(poly);
 	//temp = simplify(temp);
-	
+
 	list<term>::iterator it;
 	
 

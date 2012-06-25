@@ -31,14 +31,7 @@ int main()
 	//pol1.addTerm(coeff, tempExp, tempExp2);
 	
 
-	pol1.addTerm(1,1,1);
-	pol1.addTerm(2,1,1);
-	pol1.addTerm(5,1,4);
-	pol1.addTerm(7,1,4);
-	pol1.addTerm(1,2,3);
-	pol1.addTerm(4,2,3);
-	pol1.addTerm(8,2,3);
-	pol1.addTerm(2,1,1);
+
 	
 
 	cout << "ThePOL: " << pol1 << endl;
