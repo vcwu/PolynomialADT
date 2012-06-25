@@ -57,7 +57,7 @@ struct term
 	friend ostream& operator<<(ostream& out, const term &t)
 	{
 		out <<t.coeff;
-
+		 
 		if ( !(t.exp[0] ==0 ))
 		{
 			out << "x";
@@ -112,6 +112,7 @@ class Poly
 	public:
 		
 		//do i need a destructor?
+
 
 
 		Poly() {}

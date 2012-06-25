@@ -13,31 +13,37 @@ Polynomial ADT Tester
 #include <fstream>
 #include <string>
 #include <map>
+#include <sstream>
 
 using namespace std;
-int main()
-{
-	//Storing Polys to work with
-	map<string, Poly*> allPolys;
 
-	//Reading in polys from file
-	fstream file;
-	file.open("test.txt");
+struct mappedPoly
+{
+	Poly p;
+	string val[2];
+
+	Poly* getTemplate() {return &p;}
+
+};
+
+void readInPolys(fstream &file, string fName, map<string, mappedPoly>* allPolys)
+{
 	int numPoly, coeff, exp1, exp2;
 	string pName;
 	
 	if(file.is_open())
 	{	
+		
 		file >> numPoly;
 		while(numPoly > 0)
 		{	
 			file >> pName;
-			cout << pName;
 			bool more = true;
-			allPolys[pName] = new Poly();
-			
+			(*allPolys)[pName] = mappedPoly();
+			cout <<"name " << pName << endl;
 			while(more)
 			{
+				
 				file >> coeff >> exp1 >>exp2 ; 
 				term t (coeff, exp1, exp2);
 				if(!(coeff||exp1||exp2))
@@ -46,19 +52,61 @@ int main()
 				}
 				else
 				{
-					allPolys[pName]->addTerm(t);
+					((*allPolys)[pName]).getTemplate()->addTerm(t);
 				}
+				
 			}
-
-			cout <<"Poly " << pName<<  * allPolys[pName] << endl << endl;
 			numPoly--;
+			cout << *((*allPolys)[pName].getTemplate()) << endl;
+			
+
+		}
+		
+	}
+}
+
+
+
+
+int main()
+{
+
+	fstream file;
+	file.open("test.txt");
+
+	//Storing Polys to work with
+	map<string, mappedPoly>* allPolys = new map<string, mappedPoly>;
+
+
+	//Reading in polys from file
+	cout << "Reading in polynomials from file..." << endl;
+	readInPolys(file, "test.txt", allPolys);
+
+	//Reading in and Executing commands
+	//Code based on stackoverflow answer
+	//http://stackoverflow.com/questions/236129/how-to-split-a-string-in-c
+
+	stringstream ss (stringstream::in || stringstream::out);
+	string line;
+	string command, key,val1, val2;
+	enum {ADD, EQU, MUL };
+	while(getline(file, line))
+	{
+		ss << line;
+		//Strange. The first time I do this outside readInpolys, line is completely empty!
+		//as if there were an empty line between commands and polys
+		if(!line.empty())
+		{
+			//do something with line
+			ss >> command;
+			ss >> key >> val1, val2;
+			
+
 		}
 	}
-	file.close();
 
-
-	int c;
-
+	
+	//cout <<"Poly " << pName<<  * (*allPolys)[pName] << endl << endl;
 	/*
 	cout << "Pol1: " << pol1 << endl;
 	cout << "Pol2 " << pol2 << endl;
@@ -91,6 +139,7 @@ int main()
 	cout << "Original pol1: " << pol1 << endl;
 	cout << "Original pol2: " << pol2 << endl;
 	*/
+	int c;
 	cin >> c;
 
 
