@@ -44,16 +44,9 @@ ostream& operator<<(ostream& out, const Poly &p)
 		for(it = p.allTerms.begin(); it != p.allTerms.end();)
 		{
 				//!Need params for mapping the different vars
-				if( !(it->getExp1() ==0 && it->getExp2() == 0))
-				{
-					out <<  it->getCoeff() 
-						<< "x^" << it->getExp1() 
-						<< "y^" << it->getExp2();
-				}
-				else
-				{
-					out << it->getCoeff();
-				}
+				
+				out << *it;
+
 				//Hurrah! negative stays with coeff, prints perfectly
 				it++;
 				if(it != p.allTerms.end())
@@ -123,7 +116,7 @@ list<term>* Poly::simplify()
 			}
 			else
 			{
-				term t(newCoeff, it->getExp1(), it->getExp2());
+				term t(newCoeff, it->getExp(1), it->getExp(2));
 				it = seek;
 				tempList->push_back(t);
 				newCoeff = it->coeff;
@@ -131,7 +124,7 @@ list<term>* Poly::simplify()
 			seek++;	
 		}
 		//need to take care of the last group of like terms
-		term t(newCoeff, it->getExp1(), it->getExp2());
+		term t(newCoeff, it->getExp(1), it->getExp(2));
 		tempList->push_back(t);
 		
 	}

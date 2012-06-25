@@ -10,32 +10,56 @@ Polynomial ADT Tester
 #include <iostream>
 #include <list>
 #include "poly.h"
+#include <fstream>
+#include <string>
+#include <map>
 
+using namespace std;
 int main()
 {
+	//Storing Polys to work with
+	map<string, Poly*> allPolys;
+
+	//Reading in polys from file
+	fstream file;
+	file.open("test.txt");
+	int numPoly, coeff, exp1, exp2;
+	string pName;
+	
+	if(file.is_open())
+	{	
+		file >> numPoly;
+		while(numPoly > 0)
+		{	
+			file >> pName;
+			cout << pName;
+			bool more = true;
+			allPolys[pName] = new Poly();
+			
+			while(more)
+			{
+				file >> coeff >> exp1 >>exp2 ; 
+				term t (coeff, exp1, exp2);
+				if(!(coeff||exp1||exp2))
+				{
+					more = false;
+				}
+				else
+				{
+					allPolys[pName]->addTerm(t);
+				}
+			}
+
+			cout <<"Poly " << pName<<  * allPolys[pName] << endl << endl;
+			numPoly--;
+		}
+	}
+	file.close();
+
+
 	int c;
 
-	Poly pol1;
-	Poly pol2;
-	Poly* pointer1 = & pol1;
-
-	pol1.addTerm(1,1,1);
-	pol1.addTerm(3,2,3);
 	/*
-	pol1.addTerm(3,9,3);
-	pol1.addTerm(3,9,3);
-	*/
-
-	pol2.addTerm(1,1,1);
-	pol2.addTerm(5,1,1);
-
-	/*
-	pol2.addTerm(3,2,3);
-	pol2.addTerm(3,2,3);
-	pol2.addTerm(3,9,3);
-	pol2.addTerm(3,9,3);
-	*/
-	
 	cout << "Pol1: " << pol1 << endl;
 	cout << "Pol2 " << pol2 << endl;
 	
@@ -66,6 +90,9 @@ int main()
 
 	cout << "Original pol1: " << pol1 << endl;
 	cout << "Original pol2: " << pol2 << endl;
+	*/
 	cin >> c;
+
+
 	return 0;
 }

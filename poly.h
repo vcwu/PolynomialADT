@@ -14,6 +14,7 @@ s
 
 #include <list>
 #include <utility>
+#include <iostream>
 using namespace std;
 
 struct term
@@ -34,10 +35,7 @@ struct term
 	
 	int getCoeff() const {return coeff; }
 
-	int getExp1() const {return exp[0];}
-	int getExp2() const {return exp[1];}
-
-
+	int getExp(int i) const {return exp[i];}
 
 	friend bool operator<  (term t1, term t2)
 	{
@@ -56,6 +54,25 @@ struct term
 		return false;
 	}
 
+	friend ostream& operator<<(ostream& out, const term &t)
+	{
+		out <<t.coeff;
+
+		if ( !(t.exp[0] ==0 ))
+		{
+			out << "x";
+			if(t.exp[0] >1)
+				out << "^" <<  t.exp[0];
+		}
+		if ( !(t.exp[1] == 0))
+		{
+			out << "y";
+			if(t.exp[1] >1)
+				out << "^" <<t.exp[1];
+		}
+
+		return out;
+	}
 	/*
 	This tests if the terms are exactly equal (coeff, exps).
 	*/
