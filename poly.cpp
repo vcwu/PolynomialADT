@@ -116,7 +116,7 @@ list<term>* Poly::simplify()
 			}
 			else
 			{
-				term t(newCoeff, it->getExp(1), it->getExp(2));
+				term t(newCoeff, it->getExp(1), it->getExp(2),it->val1, it->val2);
 				it = seek;
 				tempList->push_back(t);
 				newCoeff = it->coeff;
@@ -124,10 +124,11 @@ list<term>* Poly::simplify()
 			seek++;	
 		}
 		//need to take care of the last group of like terms
-		term t(newCoeff, it->getExp(1), it->getExp(2));
+		term t(newCoeff, it->getExp(1), it->getExp(2), it->val1, it->val2);
 		tempList->push_back(t);
 		
 	}
+
 
 	return tempList;
 }

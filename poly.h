@@ -30,13 +30,14 @@ struct term
 
 	term() { coeff = 0; exp[0] = 0; exp[1] = 0; 
 		 val1 = "x", val2 = "y";}
-	term(int c, int exp1, int exp2)  
+
+	term(int c, int exp1, int exp2, string v1 = "x", string v2 = "y")  
 	{
 		coeff = c; 
 		exp[0] = exp1; 
 		exp[1] = exp2;
-		val1 = "x"; 
-		val2 = "y";
+		val1 = v1; 
+		val2 = v2;
 	}
 	~term() { }
 	void swap()
@@ -77,15 +78,15 @@ struct term
 		 
 		if ( !(t.exp[0] ==0 ))
 		{
-			out << t.val1;
+			out << "x";
 			if(t.exp[0] >1)
-				out << "^" <<  t.exp[0];
+				out  <<  t.exp[0];
 		}
 		if ( !(t.exp[1] == 0))
 		{
-			out << t.val2;
+			out << "y";
 			if(t.exp[1] >1)
-				out << "^" <<t.exp[1];
+				out <<t.exp[1];
 		}
 
 		return out;

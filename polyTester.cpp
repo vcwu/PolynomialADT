@@ -206,23 +206,6 @@ int main()
 	*/
 
 
-	Poly polTester; 
-	polTester.addTerm(2,3,4);
-	polTester.addTerm(2,3,4);
-	polTester.addTerm(2,3,4);
-	//list<term>* t = polTester.getTerms();
-	list<term>* t = polTester.simplify();
-	//list<term>::iterator it = t->begin();
-	list<term>::iterator it = t->begin();
-	cout <<polTester;
-	cout<< "PRINTINGI TERMS" << endl;
-	while(it != t->end())
-	{
-		cout<< *it;
-		it++;
-	}
-
-
 	
 	mappedPoly* p1 = new mappedPoly((*allPolys)["p1"]);
 	p1->val[0] = "x";
@@ -238,24 +221,26 @@ int main()
 	
 	p4->evaluate();
 	p1->evaluate();
-	
-	//here is problem!!
 	p2->evaluate();
 	
 	cout << "Original pol1: " << (*allPolys)["p1"] << endl;
-	cout << "Modifiesd Poly" << p1->p << endl;
+	cout << "Modifiesd Poly " << p1->p << endl;
 
 	cout << "Original pol4: " << (*allPolys)["p4"] << endl;
-	cout << "Modifiesd Poly4 " << p4->p << endl;
+	cout << "Modifiesd pol4 " << p4->p << endl;
 	
 	cout << "Original pol2: " << (*allPolys)["p2"] << endl;
-	cout << "Modifiesd Poly2 " << p2->p << endl;
+	cout << "Modifiesd pol2 " << p2->p << endl;
 
-	//list<term>* tester = p1->p.simplify();
-	//cout << Poly(tester);
-	//Addding def doesn't work T.T
+	list<term>* tester = p2->p.simplify();
 	
-	//cout << "Original pol2: " << pol2 << endl;
+	//Addding def doesn't work T.T
+	Poly pop1 = p1->p;
+	Poly pop2 = p2->p;
+	Poly* meat = pop1.addPoly(pop1, pop2);
+	cout << *meat << endl;
+
+	cout << "Original pol2: " <<  (*allPolys)["p2"]<< endl;
 	
 	int c;
 	cin >> c;
