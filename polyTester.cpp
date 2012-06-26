@@ -26,11 +26,12 @@ struct mappedPoly
 
 	mappedPoly() {}
 	~mappedPoly() { }
-	//makes a nice new copy of the pol template, can destroy it
+	
 	mappedPoly(Poly pol) 
 	{
 		p.setTerms(pol.getTerms());
 	}
+
 
 	Poly* getPoly() {return &p;}
 
@@ -93,6 +94,9 @@ void EatFile(fstream &file, string fName, map<string, Poly>* allPolys)
 	int numPoly, coeff, exp1, exp2;
 	string pName;
 	
+	fstream out;
+	out.open("Output_Accuracy.txt");
+
 	if(file.is_open())
 	{	
 		//Read in all the stuff. 
@@ -118,7 +122,7 @@ void EatFile(fstream &file, string fName, map<string, Poly>* allPolys)
 				
 			}
 			numPoly--;
-			std::cout << ((*allPolys)[pName]) << endl << endl;
+			out << pName <<": " << ((*allPolys)[pName]) << endl << endl;
 			
 		}
 	
@@ -136,38 +140,41 @@ void EatFile(fstream &file, string fName, map<string, Poly>* allPolys)
 			mappedPoly* p1 = new mappedPoly((*allPolys)[polKey1]);
 			p1->val[0] = val1;
 			p1->val[1]  =val2;
-			
+			out << "Mapped: " << val1 << " " <<val2 << endl;
+
 			file>> polKey2 >> val1 >> val2;
 			mappedPoly* p2 = new mappedPoly((*allPolys)[polKey2]);
 			p2->val[0] = val1;
 			p2->val[1] = val2;
+			out << "Mapped: " << val1 << " " <<val2 << endl;
+
 
 			p1->evaluate();
 			p2->evaluate();
-			cout << command << " " << polKey1  <<" "<<polKey2<< endl;
+			out << command << " " << polKey1  <<" "<<polKey2<< endl;
 
 			if(command == "add")
 			{
 				
 				Poly* meat = p1->getPoly()->addPoly(p1->p, p2->p);
-				cout << "Adding" << polKey1 << " and " << polKey2 << endl;
-				cout << "Answer: " << *meat << endl << endl;
+				out << "Adding " << polKey1 << " and " << polKey2 << endl;
+				out << "Answer: " << *meat << endl << endl;
 			}
 
 			else if(command == "equ")
 			{
 				bool ans = p1->getPoly()->Poly::equals(p1->p, p2->p);
-				cout << "Equality?" << polKey1 << " and " << polKey2 << endl;
+				out << "Equality? " << polKey1 << " and " << polKey2 << endl;
 				if(ans)
-				cout << "Answer: True" << endl << endl;
+				out << "Answer: True" << endl << endl;
 				else
-					cout << "Answer: False" << endl << endl;
+					out << "Answer: False" << endl << endl;
 			}
 			else if(command == "mul")
 			{
 				Poly* meat = p1->getPoly()->multiply(p1->p, p2->p);
-				cout << "Multiply" << polKey1 << " and " << polKey2 << endl;
-				cout << "Answer: " << *meat << endl << endl;
+				out << "Multiply " << polKey1 << " and " << polKey2 << endl;
+				out << "Answer: " << *meat << endl << endl;
 			}
 		}
 
@@ -191,89 +198,124 @@ int main()
 
 
 	//Reading in polys from file
-	std::cout << "Reading in polynomials from file..." << endl;
+	cout << "Reading in polynomials from file..." << endl;
 	EatFile(file, "test.txt", allPolys);
-
-	//Reading in and Executing commands
-	//Code based on stackoverflow answer
-	//http://stackoverflow.com/questions/236129/how-to-split-a-string-in-c
-
-
-
+	file.close();
 	
-
-
-	//cout <<"Poly " << pName<<  * (*allPolys)[pName] << endl << endl;
 	/*
-	cout << "Pol1: " << pol1 << endl;
-	cout << "Pol2 " << pol2 << endl;
-	
-	//Testing equality
-	if(pol1.equals(pol1, pol2))
-		cout << "Pol1 and Pol 2 are equal!" << endl;
-	else
-		cout <<"Nope. not equal. " << endl;
+	//TESTING ADDITION
+	fstream file2;
+	file2.open("Output_TestingAddition.txt");
 
-	//Testing simplification, 
-	//doesn't change original!
-	list<term>* meat = pol1.simplify();
-	cout << "Simplified?? " <<  Poly(meat) <<endl;
+	//Making a very large polynomial.
+	for(int x = 1000; x < 16000; x += x)
+	{
+		Poly* pol1 = new Poly();
+		Poly* pol2 = new Poly();
+		for(int i = 0; i < x; i++)
+		{	
+			//This ensures that no terms are like, and nothing
+			//will simplify. 
+			term t1(i+1, i+2, i+3);
+			term t2(i+2, i+1, i+1);
+			pol1->addTerm(t1);
+			pol2->addTerm(t2);
+		}
 
-	//Testing Adding
-	Poly* polAdded = pol1.addPoly(pol1,pol2);
-	cout << endl << "Adding... " << endl;
-	cout << pol1 << " added to " << pol2 << endl;
-	cout << "SOLUTION" <<  *polAdded << endl;
+		file2 << "Pol 1 terms: " << pol1->getTerms()->size() <<endl;
+		file2 << "Pol 2 terms: " << pol2->getTerms()->size() <<endl;
 
-	//testing Multiplication
-	Poly* mult = pol1.multiply(pol1, pol2);
-	cout << endl << "Multiply... " << endl;
-	cout << pol1 << " times " << pol2 << endl;
-	cout << "SOLUTION" <<  *mult << endl;
-
+		file2 << "Num of Operations: " 
+		 << pol1->addPolyTest(*pol1, *pol2) << endl << endl;
+	}
+	file2.close();
 	*/
 
-
 	/*
-	mappedPoly* p1 = new mappedPoly((*allPolys)["p1"]);
-	p1->val[0] = "x";
-	p1->val[1] = "y";
+	TESTING SIMPLIFY
+	fstream file2;
+	file2.open("Output_TestingSimplify.txt");
 
-	mappedPoly* p4 = new mappedPoly((*allPolys)["p4"]);
-	p4->val[0] = "x";
-	p4->val[1] = "y";
-	
-	mappedPoly* p2 = new mappedPoly((*allPolys)["p2"]);
-	p2->val[0] = "y";
-	p2->val[1] = "x";
-	
-	p4->evaluate();
-	p1->evaluate();
-	p2->evaluate();
-	
-	cout << "Original pol1: " << (*allPolys)["p1"] << endl;
-	cout << "Modifiesd Poly " << p1->p << endl;
+	for(int x = 1000; x <= 32000; x += x)
+	{
+		Poly* pol1 = new Poly();
+		Poly* pol2 = new Poly();
+		for(int i = 0; i < x; i++)
+		{	
+			//This ensures that all terms are alike.
+			term t1(i+1, 2,2);
+			term t2(i+2, 2,2);
+			pol1->addTerm(t1);
+			pol2->addTerm(t2);
+		}
 
-	cout << "Original pol4: " << (*allPolys)["p4"] << endl;
-	cout << "Modifiesd pol4 " << p4->p << endl;
-	
-	cout << "Original pol2: " << (*allPolys)["p2"] << endl;
-	cout << "Modifiesd pol2 " << p2->p << endl;
+		file2 << "Pol 1 terms: " << pol1->getTerms()->size() <<endl;
+		file2 << "Pol 2 terms: " << pol2->getTerms()->size() <<endl;
 
-	list<term>* tester = p2->p.simplify();
-	
-	//This add WORKS!!!
-	Poly pop1 = p1->p;
-	Poly pop2 = p2->p;
-	Poly* meat = pop1.addPoly(pop1, pop2);
-	cout << *meat << endl;
-
-	cout << "Original pol2: " <<  (*allPolys)["p2"]<< endl;
+		file2 << "Num of Operations: " 
+		 << pol1->simplifyTester() << endl << endl;
+	}
 	*/
 
+	/*
+	//TESTING EQUALITY
+	fstream file2;
+	file2.open("Output_TestingEquality.txt");
+
+	//Making a very large polynomial.
+	for(int x = 1000; x < 16000; x += x)
+	{
+		Poly* pol1 = new Poly();
+		Poly* pol2 = new Poly();
+		for(int i = 0; i < x; i++)
+		{	
+			//This ensures that no terms are alike,
+			//but both polynomials are equal.
+			term t1(i+1, 2,2+i);
+			term t2(i+2, 2,2+i);
+			pol1->addTerm(t1);
+			pol2->addTerm(t2);
+		}
+
+		file2 << "Pol 1 terms: " << pol1->getTerms()->size() <<endl;
+		file2 << "Pol 2 terms: " << pol2->getTerms()->size() <<endl;
+
+		file2 << "Num of Operations: " 
+		 << pol1->equalsTester(*pol1, *pol2) << endl << endl;
+	}
+	file2.close();
+	*/
+
+	/*
+	//TESTING MULTIPLICATION
+	fstream file2;
+	file2.open("Output_TestingMultiplication.txt");
+
+	//Making a very large polynomial.
+	for(int x = 100; x < 800; x += x)
+	{
+		Poly* pol1 = new Poly();
+		Poly* pol2 = new Poly();
+		for(int i = 0; i < x; i++)
+		{	
+			//This ensures that no terms are like, and nothing
+			//will simplify. 
+			term t1(i+1, i+2, i+3);
+			term t2(i+2, i+1, i+1);
+			pol1->addTerm(t1);
+			pol2->addTerm(t2);
+		}
+
+		file2 << "Pol 1 terms: " << pol1->getTerms()->size() <<endl;
+		file2 << "Pol 2 terms: " << pol2->getTerms()->size() <<endl;
+
+		file2 << "Num of Operations: " 
+		 << pol1->multiplyTester(*pol1, *pol2) << endl << endl;
+	}
+	file2.close();
+	*/
+	
 	int c;
-	std::cin >> c;
-
-
+	cin >> c;
 	return 0;
 }

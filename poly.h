@@ -4,9 +4,9 @@ Victoria Wu
 
 Polynomial ADT
 -----------------------------------------
-The polynomial is represented by a linked list of pairs, each containing
+The polynomial is represented by a linked list of terms, each containing
 the coefficient and exponents of each term. 
-s
+
 -Add, Multiply, Equality functions for polynomials
 
 
@@ -25,7 +25,6 @@ struct term
 	int coeff;
 	int exp[2];
 	//string values is to for purpose of printing out the correct variable.
-	//ideally, the term could instead print out using the mapped values...
 	string val1, val2;
 
 	term() { coeff = 0; exp[0] = 0; exp[1] = 0; 
@@ -92,7 +91,7 @@ struct term
 		return out;
 	}
 	/*
-	This tests if the terms are exactly equal (coeff, exps).
+	This tests if the terms are exactly equal (coeff and exps).
 	*/
 	friend bool operator== (term t1, term t2)
 	{
@@ -136,41 +135,33 @@ class Poly
 {
 
 	private:
-		
 		list<term>  allTerms;	
 		
 		
 	public:
-		
-		//do i need a destructor?
-
-
-
 		Poly() {}
 		~Poly() { }
 		Poly(list<term> *p) { allTerms = *p;}
+
+		//Setters, Getters
 		void setTerms(list<term> *p) {allTerms = *p;}
 		list<term>* getTerms() { return &allTerms;}
 		void addTerm(int coeff, int exp1, int exp2);
 		void addTerm(term t);
-		friend ostream& operator<<(ostream& out, const Poly &poly);
-		//Poly& operator= (const Poly &rhs);
-		
-		//I wonder if I can make this static...
-		list<term>* simplify();
-
-		Poly* evaluate(const Poly &pol);
-
 		bool isEmpty() const;
+		friend ostream& operator<<(ostream& out, const Poly &poly);
+
+		//Do stuff with Polynomials
+		list<term>* simplify();
 		bool equals(Poly &poly1, Poly &poly2);
 		Poly* addPoly(Poly &poly1, Poly &poly2);
 		Poly* multiply(Poly &poly1, Poly &poly2);
-		
-		
-		//evaluate
-		//--> Will evalaute for number input,
-		//then map x and y to first, second
 
+		//For Testing Complexity
+		long simplifyTester();
+		long addPolyTest(Poly &poly1, Poly &poly2);
+		long equalsTester(Poly &poly1, Poly &poly2);
+		long multiplyTester(Poly &poly1, Poly &poly2);
 		
 };
 

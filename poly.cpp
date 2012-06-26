@@ -3,6 +3,7 @@ CS 352, Summer '12
 Victoria Wu
 
 Polynomial ADT
+poly.cpp
 -----------------------------------------
 The polynomial is represented by a linked list of pairs, each containing
 the coefficient and exponents of each term. 
@@ -43,14 +44,11 @@ ostream& operator<<(ostream& out, const Poly &p)
 	{
 		for(it = p.allTerms.begin(); it != p.allTerms.end();)
 		{
-				//!Need params for mapping the different vars
 				
-				out << *it;
-
-				//Hurrah! negative stays with coeff, prints perfectly
-				it++;
-				if(it != p.allTerms.end())
-					out << " + ";
+			out << *it;
+			it++;
+			if(it != p.allTerms.end())
+				out << " + ";
 		}
 	}
 	else
@@ -97,22 +95,12 @@ list<term>* Poly::simplify()
 		list<term>::iterator seek = it;
 		seek++;
 
-		//No need to combine only one term
-	
-
-		/*ISSUE
-		Logic error.
-		COmpletely skips over the last term in the list. 
-		Because now if it is the bound, seek will go off the far end.
-		*/
-		
 		int newCoeff = it->coeff;
 		while(seek != p->end()) 
 		{ 
 			if(term::equalExponents(*it, *seek))
 			{
 				newCoeff += seek->coeff;
-				//The problem occurs when I try and delete the LAST elem.
 			}
 			else
 			{
@@ -128,27 +116,21 @@ list<term>* Poly::simplify()
 		tempList->push_back(t);
 		
 	}
-
-
 	return tempList;
 }
 
 
-/*
-	Precondition: Vars will always be x, then y in that order
 
-	The two polynomials are sorted, then compared term by term.
+/*
+Equals
+Precondition: Vars will always be x, then y in that order
+
+The two polynomials are sorted, then compared term by term.
 */
 bool Poly::equals(Poly &poly1, Poly &poly2)
 {
 	//First simplify.
-	/*
-	list<term>* temp1;
-	list<term>* temp2;
 
-	temp1 = poly1.simplify(poly1.getTerms(),-1,-1);
-	temp2 = poly2.simplify(poly2.getTerms(),-1,-1);
-	*/
 	list<term>* temp1 = poly1.simplify();
 	list<term>* temp2 = poly2.simplify();
 
@@ -171,28 +153,6 @@ bool Poly::equals(Poly &poly1, Poly &poly2)
 
 
 /*
-Evaluate: 
-
-A Poly is a template. Evaluate will evaluate the 
-template poly, given two inputs; constant integer inputs
-will be multiplied out and simplifed, while the exponents with 
-variable inputs will be forced to the format <x,y>. 
-An entirely new Poly will be made. If
-*/
-
-Poly* Poly::evaluate(const Poly &pol)
-{
-
-
-
-
-
-	Poly* meat = new Poly();
-	return meat;
-}
-
-
-/*
 addPoly
 non destructive
 
@@ -200,16 +160,16 @@ Copies all terms in both polys into a single list,
 then simplifies the whole thing. 
 Returns a new poly. 
 */
-
 Poly* Poly::addPoly(Poly &poly1, Poly &poly2)
 {
+
 	//Copy all terms into single list.
 	list<term>* meat = new list<term>(poly1.getTerms()->begin(), 
 		poly1.getTerms()->end());
-	
+
 	meat->insert(meat->end(),poly2.getTerms()->begin(), poly2.getTerms()->end());
-	
-	//This is really ugly. I should streamline it.
+
+
 	Poly temp = Poly(meat);
 	meat = temp.simplify();
 
@@ -218,28 +178,6 @@ Poly* Poly::addPoly(Poly &poly1, Poly &poly2)
 
 }
 
-/*
-Poly& Poly::operator= (const Poly &rhs)
-{
-	if (this == &rhs)
-		return *this;
-	
-	list<term> temp;
-
-	list<term>::const_iterator it = const_cast<list<term>* >(rhs.getTerms())->begin();
-
-	while(it != rhs.getTerms()->end())
-	{
-
-		temp.push_back(term(*it));
-		++it;
-	}
-
-	this.allTerms = temp;
-
-	return *this;
-}
-*/
 /*
 Multiply
 non Destructive
@@ -274,4 +212,161 @@ Poly* Poly::multiply(Poly &poly1, Poly &poly2)
 
 	Poly* answer = new Poly(meat);
 	return new Poly(answer->simplify());
+}
+
+/*
+For the purposes of testing.
+*/
+long Poly::addPolyTest(Poly &poly1, Poly &poly2)
+{
+	cout << "Addition..." << endl;
+	long time = 0;
+
+	//Copy all terms into single list.
+	list<term>* meat = new list<term>(poly1.getTerms()->begin(), 
+		poly1.getTerms()->end());
+
+	meat->insert(meat->end(),poly2.getTerms()->begin(), poly2.getTerms()->end());
+
+	long size1 = poly1.getTerms()->size();
+	long size2 = poly2.getTerms()->size();
+	//Simulating traversing the list.
+	time += size1;
+	time += size2;
+
+	Poly temp = Poly(meat);
+	meat = temp.simplify();
+
+	//Simplify, calculated from before
+	//n log n + n 
+	time += 2*(size1+size2) + (2*(size1+size2)) * 
+		log10((float)(2*(size1+size2))); 
+
+	return time;
+
+}	//Traversing pol1 and pol2.
+
+
+/*
+Testing simplify, counting operations
+*/
+long Poly::simplifyTester()
+{
+
+	long time = 0;
+
+	list<term>*  p = this->getTerms();
+
+	list<term>* tempList = new list<term>();
+
+	if(!p->empty())	
+	{
+		//STL::sort is given as O(n log n). 
+		p->sort();
+		long size = p->size();
+		time += (size * log10((float)size) );
+
+		list<term>::iterator it = p->begin();
+		list<term>::iterator seek = it;
+		seek++;
+
+		int newCoeff = it->coeff;
+
+		//Iterate through the list. 
+		time += size;
+
+		while(seek != p->end()) 
+		{ 
+			if(term::equalExponents(*it, *seek))
+			{
+				newCoeff += seek->coeff;
+			}
+			else
+			{
+				term t(newCoeff, it->getExp(1), it->getExp(2),it->val1, it->val2);
+				it = seek;
+				tempList->push_back(t);
+				newCoeff = it->coeff;
+			}
+			seek++;	
+		}
+		term t(newCoeff, it->getExp(1), it->getExp(2), it->val1, it->val2);
+		tempList->push_back(t);
+	}
+	return time;
+}
+
+/*
+Testing Equality
+*/
+long Poly::equalsTester(Poly &poly1, Poly &poly2)
+{
+	//First simplify.
+	long time = 0;
+
+	list<term>* temp1 = poly1.simplify();
+	list<term>* temp2 = poly2.simplify();
+	long size1 = poly1.getTerms()->size();
+	long size2 = poly2.getTerms()->size();
+
+	//Simplify, calculated from before
+	//n log n + n 
+	time += (size1) + ((size1)) * 
+		log10((float)((size1))); 
+
+	time += (size2) + ((size2)) * 
+		log10((float)((size2))); 
+
+	//Comparing terms in each poly to each other.
+	bool dif = false;
+	while(!temp1->empty() && !temp2->empty() && !dif)
+	{
+			time = time +1;
+			if(temp1->front() == temp2->front())
+			{
+				temp1->pop_front();
+				temp2->pop_front();
+			}
+			else
+			{
+				dif = true;
+			}
+	}
+	return time;
+
+}
+
+/*
+Testing Multiplying
+
+*/
+long Poly::multiplyTester(Poly &poly1, Poly &poly2)
+{
+	long time = 0;
+
+	//Distribute out the two polys. 
+	list<term>* meat = new list<term>;
+
+	list<term>* pol1 = poly1.getTerms();
+	list<term>* pol2 = poly2.getTerms();
+
+	list<term>::const_iterator point1 = pol1->begin();
+	list<term>::const_iterator point2 = pol2->begin();
+
+	while(point1 != pol1->end())
+	{
+		while(point2 != pol2->end())
+		{
+			//multiply point1 and point2 term
+			//add result on meat list
+			meat->push_back(term::multiply(*point1, *point2));
+			point2++;
+			time++;
+		}
+		point2 = pol2->begin();
+		point1++;
+		time++;
+	}
+
+	return time;
 }
