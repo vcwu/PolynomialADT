@@ -149,6 +149,7 @@ class Poly
 		Poly() {}
 		~Poly() { }
 		Poly(list<term> *p) { allTerms = *p;}
+		void setTerms(list<term> *p) {allTerms = *p;}
 		list<term>* getTerms() { return &allTerms;}
 		void addTerm(int coeff, int exp1, int exp2);
 		void addTerm(term t);

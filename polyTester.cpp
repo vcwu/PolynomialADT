@@ -27,7 +27,11 @@ struct mappedPoly
 	mappedPoly() {}
 	~mappedPoly() { }
 	//makes a nice new copy of the pol template, can destroy it
-	mappedPoly(Poly pol) {  p = pol;}
+	mappedPoly(Poly pol) 
+	{
+		p.setTerms(pol.getTerms());
+	}
+
 	Poly* getPoly() {return &p;}
 
 	/*
@@ -119,7 +123,8 @@ void EatFile(fstream &file, string fName, map<string, Poly>* allPolys)
 		}
 	
 		//Parse the commands. 
-
+		//Strange. Will continue to go one more time, though there's nothing
+		//else in the file..
 		while(!file.eof())
 		{
 			string command, polKey1, polKey2; 
@@ -131,29 +136,39 @@ void EatFile(fstream &file, string fName, map<string, Poly>* allPolys)
 			mappedPoly* p1 = new mappedPoly((*allPolys)[polKey1]);
 			p1->val[0] = val1;
 			p1->val[1]  =val2;
-			cout << "val1, val2 " << val1 << val2 << endl;
-			cout << "Poly 1: "  << p1->p <<endl;
 			
 			file>> polKey2 >> val1 >> val2;
 			mappedPoly* p2 = new mappedPoly((*allPolys)[polKey2]);
-			//reading in correctly...
 			p2->val[0] = val1;
 			p2->val[1] = val2;
-			cout << "val1, val2 " << val1 << val2 << endl;
-			cout << "Poly 2: "  << p2->p << endl;
 
-
+			p1->evaluate();
+			p2->evaluate();
 			cout << command << " " << polKey1  <<" "<<polKey2<< endl;
 
 			if(command == "add")
 			{
+				
 				Poly* meat = p1->getPoly()->addPoly(p1->p, p2->p);
 				cout << "Adding" << polKey1 << " and " << polKey2 << endl;
 				cout << "Answer: " << *meat << endl << endl;
-				
-
 			}
 
+			else if(command == "equ")
+			{
+				bool ans = p1->getPoly()->Poly::equals(p1->p, p2->p);
+				cout << "Equality?" << polKey1 << " and " << polKey2 << endl;
+				if(ans)
+				cout << "Answer: True" << endl << endl;
+				else
+					cout << "Answer: False" << endl << endl;
+			}
+			else if(command == "mul")
+			{
+				Poly* meat = p1->getPoly()->multiply(p1->p, p2->p);
+				cout << "Multiply" << polKey1 << " and " << polKey2 << endl;
+				cout << "Answer: " << *meat << endl << endl;
+			}
 		}
 
 
@@ -185,41 +200,6 @@ int main()
 
 
 
-	/*
-	while(getline(file, line))
-	{
-		
-		//Strange. The first time I do this outside readInpolys, line is completely empty!
-		//as if there were an empty line between commands and polys
-		if(!line.empty())
-		{
-			//Mapping values to mappedPoly
-			ss >> command;
-		
-			ss >> polKey1 >> val1 >> val2;
-	
-
-			
-			mappedPoly* p1 = new mappedPoly((*allPolys)[polKey1]);
-			p1->val[0] = val1;
-			p1->val[1]  =val2;
-
-			ss >> polKey2 >> val1, val2;
-			mappedPoly* p2 = new mappedPoly((*allPolys)[polKey2]);
-			p2->val[0] = val1;
-			p2->val[1] = val2;
-
-			if(command == "add")
-			{
-				Poly* meat = p1->getPoly()->addPoly(p1->p, p2->p);
-				cout << "Adding" << polKey1 << " and " << polKey2 << endl;
-				cout << "Answer: " << *meat << endl;
-				
-
-			}
-		}
-	}
-	*/
 	
 
 
@@ -282,7 +262,7 @@ int main()
 
 	list<term>* tester = p2->p.simplify();
 	
-	//Addding def doesn't work T.T
+	//This add WORKS!!!
 	Poly pop1 = p1->p;
 	Poly pop2 = p2->p;
 	Poly* meat = pop1.addPoly(pop1, pop2);
