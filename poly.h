@@ -117,6 +117,19 @@ struct term
 		int newExp2 = t1.exp[1]+t2.exp[1];
 		return term(newC, newExp1, newExp2);
 	}
+
+	term& term::operator= (const term &rhs)
+	{
+		if (this == &rhs)
+			return *this;
+		coeff = rhs.getCoeff();
+		exp[0] = rhs.getExp(1);
+		exp[1] = rhs.getExp(2);
+		val1 = rhs.val1;
+		val2 = rhs.val2;
+
+		return *this;
+	}
 };
 	
 class Poly
@@ -136,11 +149,11 @@ class Poly
 		Poly() {}
 		~Poly() { }
 		Poly(list<term> *p) { allTerms = *p;}
-		list<term>* getTerms()  { return &allTerms;}
+		list<term>* getTerms() { return &allTerms;}
 		void addTerm(int coeff, int exp1, int exp2);
 		void addTerm(term t);
 		friend ostream& operator<<(ostream& out, const Poly &poly);
-		Poly& operator= (const Poly &rhs);
+		//Poly& operator= (const Poly &rhs);
 		
 		//I wonder if I can make this static...
 		list<term>* simplify();

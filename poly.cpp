@@ -218,17 +218,28 @@ Poly* Poly::addPoly(Poly &poly1, Poly &poly2)
 
 }
 
+/*
 Poly& Poly::operator= (const Poly &rhs)
 {
 	if (this == &rhs)
 		return *this;
-	list<term> temp (rhs.allTerms.begin(), rhs.allTerms.end());
+	
+	list<term> temp;
 
-	allTerms = temp;
+	list<term>::const_iterator it = const_cast<list<term>* >(rhs.getTerms())->begin();
 
+	while(it != rhs.getTerms()->end())
+	{
+
+		temp.push_back(term(*it));
+		++it;
+	}
+
+	this.allTerms = temp;
 
 	return *this;
 }
+*/
 /*
 Multiply
 non Destructive

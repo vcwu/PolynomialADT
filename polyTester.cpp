@@ -84,14 +84,14 @@ struct mappedPoly
 
 };
 
-void readInPolys(fstream &file, string fName, map<string, Poly>* allPolys)
+void EatFile(fstream &file, string fName, map<string, Poly>* allPolys)
 {
 	int numPoly, coeff, exp1, exp2;
 	string pName;
 	
 	if(file.is_open())
 	{	
-		
+		//Read in all the stuff. 
 		file >> numPoly;
 		while(numPoly > 0)
 		{	
@@ -114,10 +114,52 @@ void readInPolys(fstream &file, string fName, map<string, Poly>* allPolys)
 				
 			}
 			numPoly--;
-			cout << ((*allPolys)[pName]) << endl << endl;
+			std::cout << ((*allPolys)[pName]) << endl << endl;
 			
 		}
+	
+		//Parse the commands. 
+
+		while(!file.eof())
+		{
+			string command, polKey1, polKey2; 
+			string val1, val2;
+
+			file >> command;
+
+			file>> polKey1 >> val1 >> val2;
+			mappedPoly* p1 = new mappedPoly((*allPolys)[polKey1]);
+			p1->val[0] = val1;
+			p1->val[1]  =val2;
+			cout << "val1, val2 " << val1 << val2 << endl;
+			cout << "Poly 1: "  << p1->p <<endl;
+			
+			file>> polKey2 >> val1 >> val2;
+			mappedPoly* p2 = new mappedPoly((*allPolys)[polKey2]);
+			//reading in correctly...
+			p2->val[0] = val1;
+			p2->val[1] = val2;
+			cout << "val1, val2 " << val1 << val2 << endl;
+			cout << "Poly 2: "  << p2->p << endl;
+
+
+			cout << command << " " << polKey1  <<" "<<polKey2<< endl;
+
+			if(command == "add")
+			{
+				Poly* meat = p1->getPoly()->addPoly(p1->p, p2->p);
+				cout << "Adding" << polKey1 << " and " << polKey2 << endl;
+				cout << "Answer: " << *meat << endl << endl;
+				
+
+			}
+
+		}
+
+
+	
 	}
+
 }
 
 
@@ -134,45 +176,51 @@ int main()
 
 
 	//Reading in polys from file
-	cout << "Reading in polynomials from file..." << endl;
-	readInPolys(file, "test.txt", allPolys);
+	std::cout << "Reading in polynomials from file..." << endl;
+	EatFile(file, "test.txt", allPolys);
 
 	//Reading in and Executing commands
 	//Code based on stackoverflow answer
 	//http://stackoverflow.com/questions/236129/how-to-split-a-string-in-c
 
-	stringstream ss (stringstream::in || stringstream::out);
-	string line;
-	string command, polKey; 
-	string val1, val2;
 
+
+	/*
 	while(getline(file, line))
 	{
-		ss << line;
+		
 		//Strange. The first time I do this outside readInpolys, line is completely empty!
 		//as if there were an empty line between commands and polys
 		if(!line.empty())
 		{
 			//Mapping values to mappedPoly
 			ss >> command;
-			ss >> polKey >> val1 >> val2;
+		
+			ss >> polKey1 >> val1 >> val2;
+	
 
-			mappedPoly* p1 = new mappedPoly((*allPolys)[polKey]);
+			
+			mappedPoly* p1 = new mappedPoly((*allPolys)[polKey1]);
 			p1->val[0] = val1;
 			p1->val[1]  =val2;
 
-			ss >> polKey >> val1, val2;
-			mappedPoly* p2 = new mappedPoly((*allPolys)[polKey]);
+			ss >> polKey2 >> val1, val2;
+			mappedPoly* p2 = new mappedPoly((*allPolys)[polKey2]);
 			p2->val[0] = val1;
 			p2->val[1] = val2;
 
 			if(command == "add")
 			{
-				//p1->getTemplate()->addPoly(p1->p, p2->p);
+				Poly* meat = p1->getPoly()->addPoly(p1->p, p2->p);
+				cout << "Adding" << polKey1 << " and " << polKey2 << endl;
+				cout << "Answer: " << *meat << endl;
+				
 
 			}
 		}
 	}
+	*/
+	
 
 
 	//cout <<"Poly " << pName<<  * (*allPolys)[pName] << endl << endl;
@@ -206,7 +254,7 @@ int main()
 	*/
 
 
-	
+	/*
 	mappedPoly* p1 = new mappedPoly((*allPolys)["p1"]);
 	p1->val[0] = "x";
 	p1->val[1] = "y";
@@ -241,9 +289,10 @@ int main()
 	cout << *meat << endl;
 
 	cout << "Original pol2: " <<  (*allPolys)["p2"]<< endl;
-	
+	*/
+
 	int c;
-	cin >> c;
+	std::cin >> c;
 
 
 	return 0;
