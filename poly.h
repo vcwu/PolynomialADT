@@ -41,7 +41,7 @@ struct term
 	~term() { }
 	void swap()
 	{
-		int& temp = exp[0];
+		int temp = exp[0];
 		exp[0] = exp[1];
 		exp[1] = temp;
 		string temp2 = val1;

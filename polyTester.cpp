@@ -223,7 +223,7 @@ int main()
 	}
 
 
-
+	
 	mappedPoly* p1 = new mappedPoly((*allPolys)["p1"]);
 	p1->val[0] = "x";
 	p1->val[1] = "y";
@@ -231,21 +231,23 @@ int main()
 	mappedPoly* p4 = new mappedPoly((*allPolys)["p4"]);
 	p4->val[0] = "x";
 	p4->val[1] = "y";
-
+	
 	mappedPoly* p2 = new mappedPoly((*allPolys)["p2"]);
 	p2->val[0] = "y";
 	p2->val[1] = "x";
-
+	
 	p4->evaluate();
 	p1->evaluate();
+	
+	//here is problem!!
 	p2->evaluate();
-
+	
 	cout << "Original pol1: " << (*allPolys)["p1"] << endl;
 	cout << "Modifiesd Poly" << p1->p << endl;
 
 	cout << "Original pol4: " << (*allPolys)["p4"] << endl;
 	cout << "Modifiesd Poly4 " << p4->p << endl;
-
+	
 	cout << "Original pol2: " << (*allPolys)["p2"] << endl;
 	cout << "Modifiesd Poly2 " << p2->p << endl;
 
