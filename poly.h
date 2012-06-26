@@ -15,6 +15,8 @@ s
 #include <list>
 #include <utility>
 #include <iostream>
+#include <string>
+
 using namespace std;
 
 struct term
@@ -22,20 +24,35 @@ struct term
 
 	int coeff;
 	int exp[2];
+	//string values is to for purpose of printing out the correct variable.
+	//ideally, the term could instead print out using the mapped values...
+	string val1, val2;
 
-	
-
-	term() { coeff = 0; exp[0] = 0; exp[1] = 0;}
+	term() { coeff = 0; exp[0] = 0; exp[1] = 0; 
+		 val1 = "x", val2 = "y";}
 	term(int c, int exp1, int exp2)  
 	{
 		coeff = c; 
 		exp[0] = exp1; 
 		exp[1] = exp2;
+		val1 = "x"; 
+		val2 = "y";
 	}
-	
+	~term() { }
+	void swap()
+	{
+		int& temp = exp[0];
+		exp[0] = exp[1];
+		exp[1] = temp;
+		string temp2 = val1;
+		val1 = val2;
+		val2 = temp2;
+
+	}
+
 	int getCoeff() const {return coeff; }
 
-	int getExp(int i) const {return exp[i];}
+	int getExp(int i) const {return exp[--i];}
 
 	friend bool operator<  (term t1, term t2)
 	{
@@ -60,13 +77,13 @@ struct term
 		 
 		if ( !(t.exp[0] ==0 ))
 		{
-			out << "x";
+			out << t.val1;
 			if(t.exp[0] >1)
 				out << "^" <<  t.exp[0];
 		}
 		if ( !(t.exp[1] == 0))
 		{
-			out << "y";
+			out << t.val2;
 			if(t.exp[1] >1)
 				out << "^" <<t.exp[1];
 		}
@@ -116,12 +133,13 @@ class Poly
 
 
 		Poly() {}
+		~Poly() { }
 		Poly(list<term> *p) { allTerms = *p;}
 		list<term>* getTerms()  { return &allTerms;}
 		void addTerm(int coeff, int exp1, int exp2);
 		void addTerm(term t);
 		friend ostream& operator<<(ostream& out, const Poly &poly);
-		
+		Poly& operator= (const Poly &rhs);
 		
 		//I wonder if I can make this static...
 		list<term>* simplify();

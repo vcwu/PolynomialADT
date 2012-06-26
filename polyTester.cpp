@@ -15,6 +15,7 @@ Polynomial ADT Tester
 #include <map>
 #include <sstream>
 #include <ctype.h>
+#include <math.h>
 
 using namespace std;
 
@@ -24,9 +25,10 @@ struct mappedPoly
 	string val[2];
 
 	mappedPoly() {}
+	~mappedPoly() { }
 	//makes a nice new copy of the pol template, can destroy it
-	mappedPoly(Poly pol) { p = pol;}
-	Poly* getTemplate() {return &p;}
+	mappedPoly(Poly pol) {  p = pol;}
+	Poly* getPoly() {return &p;}
 
 	/*
 	is_number from stack overflow answer
@@ -50,11 +52,34 @@ struct mappedPoly
 
 	if val is [x,y] no need to eval
 	*/
-	Poly* evaluate()
+	void evaluate()
 	{
 		//Check if either val[0] or val[1] is a string
-		
+		list<term>* terms = p.getTerms();
+		list<term>::iterator it = terms->begin();
+		while(it != terms->end())
+		{
+			//Will check for swapped positions, since
+			//use of simplify requires forcing to <x,y>. 
+			if(val[0] == "y" || val[1] == "x")
+				it->swap();
 
+			for(int index = 0; index < 2; index ++)
+			{
+				//Distributing out the number. 
+				if(is_number(val[index]))
+				{
+					//no logical loss of precision, since exponents 
+					//and vars will always be ints
+					int eval = pow((double)atoi(val[index].c_str()), it->exp[index]);
+					it->coeff = (it->coeff) * eval;
+
+					//Resetting exponent to zero, since it has been replaced by num
+					it->exp[index] = 0;
+				}
+			}
+			++it;
+		}
 	}
 
 };
@@ -73,7 +98,6 @@ void readInPolys(fstream &file, string fName, map<string, Poly>* allPolys)
 			file >> pName;
 			bool more = true;
 			(*allPolys)[pName] = Poly();
-			cout <<"name " << pName << " " << endl;
 			while(more)
 			{
 				
@@ -135,7 +159,7 @@ int main()
 
 			mappedPoly* p1 = new mappedPoly((*allPolys)[polKey]);
 			p1->val[0] = val1;
-			p1->val[1] = val2;
+			p1->val[1]  =val2;
 
 			ss >> polKey >> val1, val2;
 			mappedPoly* p2 = new mappedPoly((*allPolys)[polKey]);
@@ -149,10 +173,6 @@ int main()
 			}
 		}
 	}
-
-	
-	string hello = "hello";
-	cout << mappedPoly::is_number(hello);
 
 
 	//cout <<"Poly " << pName<<  * (*allPolys)[pName] << endl << endl;
@@ -183,11 +203,58 @@ int main()
 	cout << pol1 << " times " << pol2 << endl;
 	cout << "SOLUTION" <<  *mult << endl;
 
-
-
-	cout << "Original pol1: " << pol1 << endl;
-	cout << "Original pol2: " << pol2 << endl;
 	*/
+
+
+	Poly polTester; 
+	polTester.addTerm(2,3,4);
+	polTester.addTerm(2,3,4);
+	polTester.addTerm(2,3,4);
+	//list<term>* t = polTester.getTerms();
+	list<term>* t = polTester.simplify();
+	//list<term>::iterator it = t->begin();
+	list<term>::iterator it = t->begin();
+	cout <<polTester;
+	cout<< "PRINTINGI TERMS" << endl;
+	while(it != t->end())
+	{
+		cout<< *it;
+		it++;
+	}
+
+
+
+	mappedPoly* p1 = new mappedPoly((*allPolys)["p1"]);
+	p1->val[0] = "x";
+	p1->val[1] = "y";
+
+	mappedPoly* p4 = new mappedPoly((*allPolys)["p4"]);
+	p4->val[0] = "x";
+	p4->val[1] = "y";
+
+	mappedPoly* p2 = new mappedPoly((*allPolys)["p2"]);
+	p2->val[0] = "y";
+	p2->val[1] = "x";
+
+	p4->evaluate();
+	p1->evaluate();
+	p2->evaluate();
+
+	cout << "Original pol1: " << (*allPolys)["p1"] << endl;
+	cout << "Modifiesd Poly" << p1->p << endl;
+
+	cout << "Original pol4: " << (*allPolys)["p4"] << endl;
+	cout << "Modifiesd Poly4 " << p4->p << endl;
+
+	cout << "Original pol2: " << (*allPolys)["p2"] << endl;
+	cout << "Modifiesd Poly2 " << p2->p << endl;
+
+	//list<term>* tester = p1->p.simplify();
+	//cout << Poly(tester);
+	//Addding def doesn't work T.T
+	
+	//cout << "Original pol2: " << pol2 << endl;
+	
 	int c;
 	cin >> c;
 
